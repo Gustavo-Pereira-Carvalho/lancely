@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Lancely</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <div>
+      <div class="logo-box">
+        <img src="assets/logo.png">
+        <span>Lancely</span>
+      </div>
+
+      <nav>
+        <a class="active">Dashboard</a>
+        <a href="clientes.html">Clientes</a>
+        <a href="projetos.html">Projetos</a>
+      </nav>
+    </div>
+
+    <div class="plan-box">
+      <h4>Plano Free</h4>
+      <p>3 de 5 clientes</p>
+      <div class="progress">
+        <div class="bar"></div>
+      </div>
+      <button>Upgrade</button>
+    </div>
+
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <h1>Bom dia 👋</h1>
+
+      <div class="top-actions">
+        <input placeholder="Buscar..." class="search">
+
+        <div class="user-box">
+          <img src="https://i.pravatar.cc/40">
+          <span>Gustavo</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARDS -->
+    <div class="cards">
+
+      <div class="card">
+        <div class="icon">💰</div>
+        <div>
+          <h4>Ganhos</h4>
+          <p id="ganhos">R$ 0</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="icon">📁</div>
+        <div>
+          <h4>Projetos</h4>
+          <p id="totalProjetos">0</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="icon">⏳</div>
+        <div>
+          <h4>Pendentes</h4>
+          <p id="pendentes">0</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- GRID -->
+    <div class="grid">
+
+      <!-- GRAFICO -->
+      <div class="box">
+        <h3>Visão geral</h3>
+        <canvas id="grafico"></canvas>
+      </div>
+
+      <!-- PROJETOS -->
+      <div class="box">
+        <h3>Projetos recentes</h3>
+        <ul id="listaProjetos"></ul>
+      </div>
+
+      <!-- CLIENTES -->
+      <div class="box">
+        <h3>Clientes recentes</h3>
+        <ul id="listaClientes"></ul>
+      </div>
+
+    </div>
+
+  </main>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Projetos</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <div>
+      <div class="logo-box">
+        <img src="assets/logo.png">
+        <span>Lancely</span>
+      </div>
+
+      <nav>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="clientes.html">Clientes</a>
+        <a href="projetos.html" class="active">Projetos</a>
+      </nav>
+    </div>
+
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <h1>Projetos</h1>
+
+      <div class="top-actions">
+        <input placeholder="Buscar..." class="search">
+      </div>
+    </div>
+
+    <!-- BOX FORM -->
+    <div class="box">
+      <h3>Novo Projeto</h3>
+
+      <div class="form-row">
+        <input type="text" id="projetoNome" placeholder="Nome do projeto">
+        <input type="number" id="projetoValor" placeholder="Valor">
+        <select id="clienteSelect"></select>
+        <button onclick="addProjeto()">Adicionar</button>
+      </div>
+    </div>
+
+    <!-- FILTROS -->
+    <div class="filtros">
+      <button onclick="filtrarProjetos('todos')">Todos</button>
+      <button onclick="filtrarProjetos('pendentes')">Pendentes</button>
+      <button onclick="filtrarProjetos('pagos')">Pagos</button>
+    </div>
+
+    <!-- LISTA -->
+    <div class="box">
+      <ul id="listaProjetos"></ul>
+    </div>
+
+  </main>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>Clientes</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="container">
+
+  <aside class="sidebar">
+
+    <div>
+      <div class="logo-box">
+        <img src="assets/logo.png" />
+        <span>Lancely</span>
+      </div>
+
+      <nav>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="clientes.html" class="active">Clientes</a>
+        <a href="projetos.html">Projetos</a>
+      </nav>
+    </div>
+
+  </aside>
+
+  <main class="main">
+
+    <div class="topbar">
+      <h1>Clientes</h1>
+
+      <div class="top-actions">
+        <input placeholder="Buscar..." class="search">
+      </div>
+    </div>
+
+    <!-- BOX -->
+    <div class="box">
+      <h3>Novo Cliente</h3>
+
+      <div class="form-row">
+        <input type="text" id="clienteInput" placeholder="Nome do cliente" />
+        <button onclick="addCliente()">Adicionar</button>
+      </div>
+    </div>
+
+    <!-- LISTA -->
+    <div class="box">
+      <ul id="listaClientes"></ul>
+    </div>
+
+  </main>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
