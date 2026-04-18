@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Projetos</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="projetos.css">
 </head>
 <body>
 
@@ -11,7 +11,6 @@
 
   <!-- SIDEBAR -->
   <aside class="sidebar">
-
     <div>
       <div class="logo-box">
         <img src="assets/logo.png">
@@ -24,7 +23,6 @@
         <a href="projetos.html" class="active">Projetos</a>
       </nav>
     </div>
-
   </aside>
 
   <!-- MAIN -->
@@ -39,7 +37,7 @@
       </div>
     </div>
 
-    <!-- BOX FORM -->
+    <!-- FORM -->
     <div class="box">
       <h3>Novo Projeto</h3>
 
@@ -47,6 +45,10 @@
         <input type="text" id="projetoNome" placeholder="Nome do projeto">
         <input type="number" id="projetoValor" placeholder="Valor">
         <select id="clienteSelect"></select>
+
+        <!-- 🔥 NOVO -->
+        <input type="date" id="projetoPrazo">
+
         <button onclick="addProjeto()">Adicionar</button>
       </div>
     </div>
@@ -67,6 +69,6 @@
 
 </div>
 
-<script src="script.js"></script>
+<script src="js/main.js"></script>
 </body>
 </html>

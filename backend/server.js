@@ -9,7 +9,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const SECRET = "lancely_secret"; // depois muda isso
+const SECRET = "lancely_secret";
 
 // =========================
 // CONEXÃO
@@ -39,11 +39,16 @@ const Projeto = mongoose.model("Projeto", {
   pago: Boolean,
   clienteId: String,
   clienteNome: String,
-  userId: String
+  userId: String,
+  prazo: Date,
+  criadoEm: {
+    type: Date,
+    default: Date.now
+  }
 });
 
 // =========================
-// MIDDLEWARE AUTH
+// AUTH
 // =========================
 function auth(req, res, next) {
   const token = req.headers.authorization;
@@ -60,10 +65,8 @@ function auth(req, res, next) {
 }
 
 // =========================
-// AUTH
-// =========================
-
 // REGISTER
+// =========================
 app.post("/register", async (req, res) => {
   const { email, senha } = req.body;
 
@@ -76,7 +79,7 @@ app.post("/register", async (req, res) => {
 
   const senhaHash = await bcrypt.hash(senha, 10);
 
-  const user = await User.create({
+  await User.create({
     email,
     senha: senhaHash
   });
@@ -84,7 +87,9 @@ app.post("/register", async (req, res) => {
   res.json({ ok: true });
 });
 
+// =========================
 // LOGIN
+// =========================
 app.post("/login", async (req, res) => {
   const { email, senha } = req.body;
 
@@ -116,7 +121,10 @@ app.post("/clientes", auth, async (req, res) => {
 });
 
 app.delete("/clientes/:id", auth, async (req, res) => {
-  await Cliente.findByIdAndDelete(req.params.id);
+  await Cliente.findOneAndDelete({
+    _id: req.params.id,
+    userId: req.userId
+  });
   res.json({ ok: true });
 });
 
@@ -124,7 +132,7 @@ app.delete("/clientes/:id", auth, async (req, res) => {
 // PROJETOS
 // =========================
 app.get("/projetos", auth, async (req, res) => {
-  const projetos = await Projeto.find({ userId: req.userId });
+  const projetos = await Projeto.find({ userId: req.userId }).sort({ criadoEm: 1 });
   res.json(projetos);
 });
 
@@ -137,16 +145,24 @@ app.post("/projetos", auth, async (req, res) => {
 });
 
 app.put("/projetos/:id", auth, async (req, res) => {
-  const projeto = await Projeto.findByIdAndUpdate(
-    req.params.id,
-    { pago: true },
-    { new: true }
-  );
+  const projeto = await Projeto.findOne({
+    _id: req.params.id,
+    userId: req.userId
+  });
+
+  if (!projeto) return res.status(404).json({ erro: "Não encontrado" });
+
+  projeto.pago = !projeto.pago;
+  await projeto.save();
+
   res.json(projeto);
 });
 
 app.delete("/projetos/:id", auth, async (req, res) => {
-  await Projeto.findByIdAndDelete(req.params.id);
+  await Projeto.findOneAndDelete({
+    _id: req.params.id,
+    userId: req.userId
+  });
   res.json({ ok: true });
 });
 

@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <title>Lancely</title>
+  <title>Lancely Dashboard</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -14,8 +14,11 @@
 
     <div>
       <div class="logo-box">
-        <img src="assets/logo.png">
-        <span>Lancely</span>
+        <div class="logo">L</div>
+        <div>
+          <strong>Lancely</strong>
+          <p>Organize. Cresça.</p>
+        </div>
       </div>
 
       <nav>
@@ -28,9 +31,11 @@
     <div class="plan-box">
       <h4>Plano Free</h4>
       <p>3 de 5 clientes</p>
+
       <div class="progress">
         <div class="bar"></div>
       </div>
+
       <button>Upgrade</button>
     </div>
 
@@ -41,14 +46,20 @@
 
     <!-- TOPBAR -->
     <div class="topbar">
-      <h1>Bom dia 👋</h1>
+      <div>
+        <h1>Bom dia, Gustavo 👋</h1>
+        <p>Aqui está um resumo do seu trabalho hoje.</p>
+      </div>
 
       <div class="top-actions">
         <input placeholder="Buscar..." class="search">
 
         <div class="user-box">
           <img src="https://i.pravatar.cc/40">
-          <span>Gustavo</span>
+          <div>
+            <strong>Gustavo</strong>
+            <span>Freelancer</span>
+          </div>
         </div>
       </div>
     </div>
@@ -59,57 +70,70 @@
       <div class="card">
         <div class="icon">💰</div>
         <div>
-          <h4>Ganhos</h4>
-          <p id="ganhos">R$ 0</p>
+          <span>Ganhos (mês)</span>
+          <h2 id="ganhos">R$ 0</h2>
         </div>
       </div>
 
       <div class="card">
         <div class="icon">📁</div>
         <div>
-          <h4>Projetos</h4>
-          <p id="totalProjetos">0</p>
+          <span>Projetos ativos</span>
+          <h2 id="totalProjetos">0</h2>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="icon">✅</div>
+        <div>
+          <span>Concluídos</span>
+          <h2 id="concluidos">0</h2>
         </div>
       </div>
 
       <div class="card">
         <div class="icon">⏳</div>
         <div>
-          <h4>Pendentes</h4>
-          <p id="pendentes">0</p>
+          <span>Pendentes</span>
+          <h2 id="pendentes">0</h2>
         </div>
       </div>
 
     </div>
 
-    <!-- GRID -->
-    <div class="grid">
+    <!-- GRID IGUAL AO DESIGN -->
+<div class="grid">
 
-      <!-- GRAFICO -->
-      <div class="box">
-        <h3>Visão geral</h3>
-        <canvas id="grafico"></canvas>
-      </div>
+  <div class="box box-grafico">
+    <h3>Visão geral dos ganhos</h3>
+    <canvas id="grafico"></canvas>
+  </div>
 
-      <!-- PROJETOS -->
-      <div class="box">
-        <h3>Projetos recentes</h3>
-        <ul id="listaProjetos"></ul>
-      </div>
+  <div class="box box-projetos">
+    <h3>Projetos recentes</h3>
+    <ul id="listaProjetos"></ul>
+  </div>
 
-      <!-- CLIENTES -->
-      <div class="box">
-        <h3>Clientes recentes</h3>
-        <ul id="listaClientes"></ul>
-      </div>
+  <div class="box box-prazos">
+    <h3>Próximos prazos</h3>
+    <ul>
+      <li>Landing Page - 2 dias</li>
+      <li>Identidade Visual - 7 dias</li>
+    </ul>
+  </div>
 
-    </div>
+  <div class="box box-clientes">
+    <h3>Clientes recentes</h3>
+    <ul id="listaClientes"></ul>
+  </div>
+
+</div>
 
   </main>
 
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="script.js"></script>
+<script src="js/main.js"></script>
 </body>
 </html>
