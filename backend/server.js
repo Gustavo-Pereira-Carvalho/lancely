@@ -1,3 +1,5 @@
+require("dotenv").config(); // 🔥 IMPORTANTE (tem que ser o primeiro)
+
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -9,21 +11,20 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const SECRET = "lancely_secret";
+const SECRET = process.env.JWT_SECRET;
 
 // =========================
 // CONEXÃO
 // =========================
-mongoose.connect("mongodb://127.0.0.1:27017/lancely");
-
-mongoose.connection.once("open", () => {
-  console.log("MongoDB conectado 🚀");
-});
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log("MongoDB conectado 🚀"))
+  .catch(err => console.error("Erro Mongo:", err));
 
 // =========================
 // MODELS
 // =========================
 const User = mongoose.model("User", {
+  nome: String,
   email: String,
   senha: String
 });
@@ -40,7 +41,7 @@ const Projeto = mongoose.model("Projeto", {
   clienteId: String,
   clienteNome: String,
   userId: String,
-  prazo: Date,
+  prazo: Date, // 🔥 importante
   criadoEm: {
     type: Date,
     default: Date.now
@@ -65,83 +66,59 @@ function auth(req, res, next) {
 }
 
 // =========================
-// REGISTER
+// ROTAS
 // =========================
 app.post("/register", async (req, res) => {
-  const { email, senha } = req.body;
-
-  if (!email || !senha) {
-    return res.json({ erro: "Preencha tudo" });
-  }
+  const { nome, email, senha } = req.body;
 
   const existe = await User.findOne({ email });
   if (existe) return res.json({ erro: "Usuário já existe" });
 
   const senhaHash = await bcrypt.hash(senha, 10);
 
-  await User.create({
-    email,
-    senha: senhaHash
-  });
+  const user = await User.create({ nome, email, senha: senhaHash });
 
   res.json({ ok: true });
 });
 
-// =========================
-// LOGIN
-// =========================
 app.post("/login", async (req, res) => {
   const { email, senha } = req.body;
 
   const user = await User.findOne({ email });
   if (!user) return res.json({ erro: "Usuário não encontrado" });
 
-  const senhaValida = await bcrypt.compare(senha, user.senha);
-  if (!senhaValida) return res.json({ erro: "Senha incorreta" });
+  const ok = await bcrypt.compare(senha, user.senha);
+  if (!ok) return res.json({ erro: "Senha incorreta" });
 
   const token = jwt.sign({ id: user._id }, SECRET);
 
-  res.json({ token });
+  res.json({
+    token,
+    nome: user.nome // 🔥 AQUI
+  });
 });
 
-// =========================
 // CLIENTES
-// =========================
 app.get("/clientes", auth, async (req, res) => {
-  const clientes = await Cliente.find({ userId: req.userId });
-  res.json(clientes);
+  res.json(await Cliente.find({ userId: req.userId }));
 });
 
 app.post("/clientes", auth, async (req, res) => {
-  const novo = await Cliente.create({
-    ...req.body,
-    userId: req.userId
-  });
-  res.json(novo);
+  res.json(await Cliente.create({ ...req.body, userId: req.userId }));
 });
 
 app.delete("/clientes/:id", auth, async (req, res) => {
-  await Cliente.findOneAndDelete({
-    _id: req.params.id,
-    userId: req.userId
-  });
+  await Cliente.findOneAndDelete({ _id: req.params.id, userId: req.userId });
   res.json({ ok: true });
 });
 
-// =========================
 // PROJETOS
-// =========================
 app.get("/projetos", auth, async (req, res) => {
-  const projetos = await Projeto.find({ userId: req.userId }).sort({ criadoEm: 1 });
-  res.json(projetos);
+  res.json(await Projeto.find({ userId: req.userId }));
 });
 
 app.post("/projetos", auth, async (req, res) => {
-  const novo = await Projeto.create({
-    ...req.body,
-    userId: req.userId
-  });
-  res.json(novo);
+  res.json(await Projeto.create({ ...req.body, userId: req.userId }));
 });
 
 app.put("/projetos/:id", auth, async (req, res) => {
@@ -163,12 +140,13 @@ app.delete("/projetos/:id", auth, async (req, res) => {
     _id: req.params.id,
     userId: req.userId
   });
+
   res.json({ ok: true });
 });
 
 // =========================
 // SERVER
 // =========================
-app.listen(3000, () => {
-  console.log("Servidor rodando em http://localhost:3000");
+app.listen(process.env.PORT || 3000, () => {
+  console.log("Servidor rodando 🚀");
 });
