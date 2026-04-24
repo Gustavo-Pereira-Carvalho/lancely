@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin</title>
+  <style>
+    body { font-family: Arial; background:#111; color:#fff; padding:20px; }
+    .card { background:#222; padding:15px; margin:10px 0; border-radius:10px; }
+    table { width:100%; border-collapse: collapse; margin-top:10px; }
+    td, th { border:1px solid #333; padding:8px; }
+  </style>
+</head>
+<body>
+
+<h1>📊 Admin Dashboard</h1>
+
+<div id="stats" class="card"></div>
+
+<h2>💳 Pagamentos</h2>
+<div id="payments"></div>
+
+<script>
+const API = "http://localhost:3000";
+const token = localStorage.getItem("token");
+
+async function load() {
+  const res = await fetch(API + "/admin/dashboard", {
+    headers: { Authorization: token }
+  });
+
+  const data = await res.json();
+
+  document.getElementById("stats").innerHTML = `
+    👤 Users: ${data.totalUsers}<br>
+    💎 PRO: ${data.proUsers}<br>
+    🆓 FREE: ${data.freeUsers}<br>
+    💰 Revenue: R$ ${data.revenue}
+  `;
+
+  let html = "<table><tr><th>User</th><th>Status</th><th>Valor</th></tr>";
+
+  data.payments.forEach(p => {
+    html += `
+      <tr>
+        <td>${p.userId}</td>
+        <td>${p.status}</td>
+        <td>R$ ${p.valor}</td>
+      </tr>
+    `;
+  });
+
+  html += "</table>";
+
+  document.getElementById("payments").innerHTML = html;
+}
+
+load();
+</script>
+
+</body>
+</html>

@@ -5,7 +5,9 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const axios = require("axios");
+const fetch = require("node-fetch");
+
+const { MercadoPagoConfig, Preference } = require("mercadopago");
 
 const app = express();
 
@@ -14,23 +16,35 @@ const app = express();
 // =========================
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.use((req, res, next) => {
   console.log("\n==============================");
   console.log("📥", req.method, req.url);
   console.log("BODY:", req.body);
-  console.log("==============================\n");
+  console.log("QUERY:", req.query);
+  console.log("==============================");
   next();
 });
 
+// =========================
+// CONFIG
+// =========================
 const SECRET = process.env.JWT_SECRET;
 
 // =========================
-// MONGODB
+// MONGO
 // =========================
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("🚀 MongoDB conectado"))
   .catch(err => console.log(err));
+
+// =========================
+// MERCADO PAGO
+// =========================
+const client = new MercadoPagoConfig({
+  accessToken: process.env.MP_ACCESS_TOKEN,
+});
 
 // =========================
 // MODELS
@@ -39,34 +53,20 @@ const User = mongoose.model("User", {
   nome: String,
   email: String,
   senha: String,
+  role: { type: String, default: "user" }, // 👈 ADMIN SYSTEM
   plano: {
     tipo: { type: String, default: "free" },
-    expiraEm: Date
-  }
-});
-
-const Cliente = mongoose.model("Cliente", {
-  nome: String,
-  userId: String
-});
-
-const Projeto = mongoose.model("Projeto", {
-  nome: String,
-  valor: Number,
-  pago: Boolean,
-  prazo: Date,
-  clienteNome: String,
-  userId: String,
-  criadoEm: { type: Date, default: Date.now }
+    expiraEm: Date,
+  },
 });
 
 // =========================
-// AUTH
+// AUTH USER
 // =========================
 function auth(req, res, next) {
   let token = req.headers.authorization;
 
-  if (!token) return res.status(401).json({ erro: "Sem token" });
+  if (!token) return res.status(401).json({ erro: "sem token" });
 
   if (token.startsWith("Bearer ")) {
     token = token.slice(7);
@@ -77,27 +77,38 @@ function auth(req, res, next) {
     req.userId = decoded.id;
     next();
   } catch {
-    return res.status(401).json({ erro: "Token inválido" });
+    return res.status(401).json({ erro: "token inválido" });
   }
 }
 
 // =========================
-// REGISTER
+// AUTH ADMIN
 // =========================
-app.post("/register", async (req, res) => {
-  const hash = await bcrypt.hash(req.body.senha, 10);
+function adminAuth(req, res, next) {
+  let token = req.headers.authorization;
 
-  await User.create({
-    nome: req.body.nome,
-    email: req.body.email,
-    senha: hash
-  });
+  if (!token) return res.status(401).json({ erro: "sem token" });
 
-  res.json({ ok: true });
-});
+  if (token.startsWith("Bearer ")) {
+    token = token.slice(7);
+  }
+
+  try {
+    const decoded = jwt.verify(token, SECRET);
+
+    if (decoded.role !== "admin") {
+      return res.status(403).json({ erro: "acesso negado" });
+    }
+
+    req.userId = decoded.id;
+    next();
+  } catch {
+    return res.status(401).json({ erro: "token inválido" });
+  }
+}
 
 // =========================
-// LOGIN
+// LOGIN USER
 // =========================
 app.post("/login", async (req, res) => {
   const user = await User.findOne({ email: req.body.email });
@@ -105,175 +116,157 @@ app.post("/login", async (req, res) => {
   if (!user) return res.json({ erro: "user not found" });
 
   const ok = await bcrypt.compare(req.body.senha, user.senha);
-
   if (!ok) return res.json({ erro: "senha inválida" });
 
-  const token = jwt.sign({ id: user._id }, SECRET);
+  const token = jwt.sign(
+    { id: user._id, role: user.role },
+    SECRET
+  );
 
   res.json({
     token,
     nome: user.nome,
+    role: user.role,
     plano: user.plano.tipo
   });
 });
 
 // =========================
-// ME
+// LOGIN ADMIN (SEPARADO)
 // =========================
-app.get("/me", auth, async (req, res) => {
-  const user = await User.findById(req.userId);
-  res.json(user);
+app.post("/admin/login", async (req, res) => {
+  const user = await User.findOne({ email: req.body.email });
+
+  if (!user || user.role !== "admin") {
+    return res.status(403).json({ erro: "não é admin" });
+  }
+
+  const ok = await bcrypt.compare(req.body.senha, user.senha);
+  if (!ok) return res.json({ erro: "senha inválida" });
+
+  const token = jwt.sign(
+    { id: user._id, role: "admin" },
+    SECRET
+  );
+
+  res.json({ token });
 });
 
 // =========================
-// CHECKOUT (CORRIGIDO 100%)
+// CHECKOUT
 // =========================
 app.post("/create-checkout", auth, async (req, res) => {
   try {
-    console.log("🧾 criando checkout...");
+    const preference = new Preference(client);
 
-    const payload = {
-      items: [
-        {
-          title: "Plano PRO",
-          quantity: 1,
-          unit_price: 29,
-          currency_id: "BRL"
-        }
-      ],
+    const result = await preference.create({
+      body: {
+        items: [
+          {
+            title: "Plano PRO",
+            quantity: 1,
+            unit_price: 29,
+            currency_id: "BRL"
+          }
+        ],
+        back_urls: {
+          success: "http://localhost:5500/dashboard.html",
+          failure: "http://localhost:5500/planos.html",
+          pending: "http://localhost:5500/planos.html"
+        },
+        auto_return: "approved",
+        external_reference: req.userId,
+        notification_url: "https://nervous-lunchroom-matchless.ngrok-free.dev/webhook"
+      }
+    });
 
-      back_urls: {
-        success: "http://localhost:5500/dashboard.html",
-        failure: "http://localhost:5500/planos.html",
-        pending: "http://localhost:5500/planos.html"
-      },
+    return res.json({ init_point: result.init_point });
 
-      external_reference: req.userId,
+  } catch (err) {
+    console.log("❌ checkout error:", err);
+    return res.status(500).json({ erro: "checkout error" });
+  }
+});
 
-      notification_url: process.env.WEBHOOK_URL
-    };
+// =========================
+// WEBHOOK (ROBUSTO)
+// =========================
+app.post("/webhook", async (req, res) => {
+  try {
+    console.log("\n🔥 WEBHOOK RECEBIDO");
 
-    console.log("PAYLOAD:", payload);
+    const type =
+      req.body?.type ||
+      req.query?.type ||
+      req.query?.topic;
 
-    const response = await axios.post(
-      "https://api.mercadopago.com/checkout/preferences",
-      payload,
+    const dataId =
+      req.body?.data?.id ||
+      req.query?.["data.id"] ||
+      req.body?.id ||
+      req.query?.id ||
+      req.body?.resource?.split?.("/").pop?.();
+
+    console.log("➡️ TYPE:", type);
+    console.log("➡️ ID:", dataId);
+
+    if (!type || !dataId) return res.sendStatus(200);
+
+    // ignora merchant order
+    if (type === "merchant_order") {
+      console.log("⛔ merchant_order ignorado");
+      return res.sendStatus(200);
+    }
+
+    if (type !== "payment") return res.sendStatus(200);
+
+    const response = await fetch(
+      `https://api.mercadopago.com/v1/payments/${dataId}`,
       {
         headers: {
-          Authorization: `Bearer ${process.env.MP_ACCESS_TOKEN}`,
-          "Content-Type": "application/json"
+          Authorization: `Bearer ${process.env.MP_ACCESS_TOKEN}`
         }
       }
     );
 
-    const data = response.data;
-
-    console.log("INIT POINT:", data.init_point);
-
-    return res.json({ init_point: data.init_point });
-
-  } catch (err) {
-    console.log("❌ CHECKOUT ERROR:");
-    console.log(err.response?.data || err.message);
-
-    return res.status(500).json({
-      erro: "checkout error"
-    });
-  }
-});
-
-// =========================
-// WEBHOOK (FUNCIONANDO)
-// =========================
-app.post("/webhook", async (req, res) => {
-  try {
-    console.log("🔥 WEBHOOK RECEBIDO:", req.body);
-
-    const body = req.body;
-
-    // =========================
-    // FORMATO 1 (payment)
-    // =========================
-    const paymentId = body?.data?.id;
-
-    // =========================
-    // FORMATO 2 (merchant order)
-    // =========================
-    const merchantOrder = body?.resource;
-
-    if (paymentId) {
-      console.log("💳 PAYMENT ID:", paymentId);
-
-      const response = await axios.get(
-        `https://api.mercadopago.com/v1/payments/${paymentId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.MP_ACCESS_TOKEN}`
-          }
-        }
-      );
-
-      const payment = response.data;
-
-      console.log("💰 STATUS:", payment.status);
-
-      if (payment.status === "approved") {
-        const user = await User.findById(payment.external_reference);
-
-        if (user) {
-          user.plano.tipo = "pro";
-          user.plano.expiraEm = new Date(Date.now() + 30 * 86400000);
-          await user.save();
-
-          console.log("🚀 PLANO ATIVADO!");
-        }
-      }
+    if (!response.ok) {
+      console.log("⚠️ pagamento não encontrado");
+      return res.sendStatus(200);
     }
 
+    const payment = await response.json();
+
+    console.log("💰 STATUS:", payment.status);
+
+    if (payment.status !== "approved") {
+      return res.sendStatus(200);
+    }
+
+    const user = await User.findById(payment.external_reference);
+
+    if (!user) return res.sendStatus(200);
+
+    user.plano.tipo = "pro";
+    user.plano.expiraEm = new Date(Date.now() + 30 * 86400000);
+
+    await user.save();
+
+    console.log("🚀 PLANO PRO ATIVADO!");
+
     return res.sendStatus(200);
 
   } catch (err) {
-    console.log("WEBHOOK ERROR:", err.message);
+    console.log("❌ webhook error:", err);
     return res.sendStatus(200);
   }
 });
 
 // =========================
-// CLIENTES
+// ADMIN ROUTE EXAMPLE
 // =========================
-app.get("/clientes", auth, async (req, res) => {
-  const data = await Cliente.find({ userId: req.userId });
-  res.json(data);
-});
-
-app.post("/clientes", auth, async (req, res) => {
-  const data = await Cliente.create({
-    nome: req.body.nome,
-    userId: req.userId
-  });
-
-  res.json(data);
-});
-
-// =========================
-// PROJETOS
-// =========================
-app.get("/projetos", auth, async (req, res) => {
-  const data = await Projeto.find({ userId: req.userId });
-  res.json(data);
-});
-
-app.post("/projetos", auth, async (req, res) => {
-  const data = await Projeto.create({
-    nome: req.body.nome,
-    valor: req.body.valor,
-    pago: false,
-    prazo: req.body.prazo,
-    clienteNome: req.body.clienteNome,
-    userId: req.userId
-  });
-
-  res.json(data);
+app.get("/admin/users", adminAuth, async (req, res) => {
+  const users = await User.find();
+  res.json(users);
 });
 
 // =========================
