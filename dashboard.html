@@ -1,139 +1,134 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
-<head>
-  <meta charset="UTF-8">
-  <title>Lancely Dashboard</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-
-<div class="container">
-
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
-
-    <div>
-      <div class="logo-box">
-        <div class="logo">L</div>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Lancely Dashboard</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
         <div>
-          <strong>Lancely</strong>
-          <p>Organize. Cresça.</p>
+          <div class="logo-box">
+            <img src="assets/logo.png" />
+            <span>Lancely</span>
+          </div>
+
+          <nav>
+            <a class="active">Dashboard</a>
+            <a href="clientes.html">Clientes</a>
+            <a href="projetos.html">Projetos</a>
+          </nav>
         </div>
-      </div>
 
-      <nav>
-        <a class="active">Dashboard</a>
-        <a href="clientes.html">Clientes</a>
-        <a href="projetos.html">Projetos</a>
-      </nav>
-    </div>
+        <div class="plan-box">
+          <h4>Plano Free</h4>
+          <p>3 de 5 clientes</p>
 
-    <div class="plan-box">
-      <h4>Plano Free</h4>
-      <p>3 de 5 clientes</p>
+          <div class="progress">
+            <div class="bar"></div>
+          </div>
 
-      <div class="progress">
-        <div class="bar"></div>
-      </div>
+          <button onclick="irPlanos()">Upgrade</button>
+        </div>
+      </aside>
 
-      <button>Upgrade</button>
-    </div>
-
-  </aside>
-
-  <!-- MAIN -->
-  <main class="main">
-
-    <!-- TOPBAR -->
-    <div class="topbar">
-      <div>
-        <h1>Bom dia, Gustavo 👋</h1>
-        <p>Aqui está um resumo do seu trabalho hoje.</p>
-      </div>
-
-      <div class="top-actions">
-        <input placeholder="Buscar..." class="search">
-
-        <div class="user-box">
-          <img src="https://i.pravatar.cc/40">
+      <!-- MAIN -->
+      <main class="main">
+        <!-- TOPBAR -->
+        <div class="topbar">
           <div>
-            <strong>Gustavo</strong>
-            <span>Freelancer</span>
+            <h1 id="saudacao">Bom dia 👋</h1>
+            <p>Aqui está um resumo do seu trabalho hoje.</p>
+          </div>
+
+          <div class="top-actions">
+            <input placeholder="Buscar..." class="search" />
+
+            <div class="user-box" onclick="toggleUserMenu()">
+              <img src="https://i.pravatar.cc/40" />
+
+              <div>
+                <strong id="userNome">Usuário</strong>
+                <span>Freelancer</span>
+              </div>
+
+              <!-- MENU -->
+              <div id="userMenu" class="user-menu">
+                <p id="menuNome"></p>
+                <small id="menuEmail"></small>
+
+                <hr />
+
+                <button onclick="irPerfil()">Perfil</button>
+                <button onclick="logout()">Sair</button>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+
+        <!-- CARDS -->
+        <div class="cards">
+          <div class="card">
+            <div class="icon">💰</div>
+            <div>
+              <span>Ganhos (mês)</span>
+              <h2 id="ganhos">R$ 0</h2>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="icon">📁</div>
+            <div>
+              <span>Projetos ativos</span>
+              <h2 id="totalProjetos">0</h2>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="icon">✅</div>
+            <div>
+              <span>Concluídos</span>
+              <h2 id="concluidos">0</h2>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="icon">⏳</div>
+            <div>
+              <span>Pendentes</span>
+              <h2 id="pendentes">0</h2>
+            </div>
+          </div>
+        </div>
+
+        <!-- GRID IGUAL AO DESIGN -->
+        <div class="grid">
+          <div class="box box-grafico">
+            <h3>Visão geral dos ganhos</h3>
+            <canvas id="grafico"></canvas>
+          </div>
+
+          <div class="box box-projetos">
+            <h3>Projetos recentes</h3>
+            <ul id="listaProjetos"></ul>
+          </div>
+
+          <div class="box box-prazos">
+            <h3>Próximos prazos</h3>
+            <ul></ul>
+          </div>
+
+          <div class="box box-clientes">
+            <h3>Clientes recentes</h3>
+            <ul id="listaClientes"></ul>
+          </div>
+        </div>
+      </main>
     </div>
 
-    <!-- CARDS -->
-    <div class="cards">
-
-      <div class="card">
-        <div class="icon">💰</div>
-        <div>
-          <span>Ganhos (mês)</span>
-          <h2 id="ganhos">R$ 0</h2>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="icon">📁</div>
-        <div>
-          <span>Projetos ativos</span>
-          <h2 id="totalProjetos">0</h2>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="icon">✅</div>
-        <div>
-          <span>Concluídos</span>
-          <h2 id="concluidos">0</h2>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="icon">⏳</div>
-        <div>
-          <span>Pendentes</span>
-          <h2 id="pendentes">0</h2>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- GRID IGUAL AO DESIGN -->
-<div class="grid">
-
-  <div class="box box-grafico">
-    <h3>Visão geral dos ganhos</h3>
-    <canvas id="grafico"></canvas>
-  </div>
-
-  <div class="box box-projetos">
-    <h3>Projetos recentes</h3>
-    <ul id="listaProjetos"></ul>
-  </div>
-
-  <div class="box box-prazos">
-    <h3>Próximos prazos</h3>
-    <ul>
-      <li>Landing Page - 2 dias</li>
-      <li>Identidade Visual - 7 dias</li>
-    </ul>
-  </div>
-
-  <div class="box box-clientes">
-    <h3>Clientes recentes</h3>
-    <ul id="listaClientes"></ul>
-  </div>
-
-</div>
-
-  </main>
-
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="js/main.js"></script>
-</body>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="module" src="js/main.js"></script>
+  </body>
 </html>

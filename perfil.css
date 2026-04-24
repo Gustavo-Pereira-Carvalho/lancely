@@ -1,0 +1,96 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: radial-gradient(circle at top left, #0B0F1A, #020617 60%);
+  color: #F8FAFC;
+  overflow: hidden;
+}
+
+/* CARD */
+.profile-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-card {
+  width: 340px;
+  background: #020617;
+  border: 1px solid #1E293B;
+  border-radius: 14px;
+
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  align-items: center;
+}
+
+/* AVATAR */
+.avatar {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+
+  background: linear-gradient(135deg, #7C3AED, #06B6D4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 22px;
+  font-weight: bold;
+  color: white;
+}
+
+/* TITULO */
+h2 {
+  font-size: 18px;
+}
+
+/* INPUT */
+input {
+  width: 100%;
+  padding: 10px 12px;
+
+  border-radius: 8px;
+  border: 1px solid #1E293B;
+  background: #0F172A;
+
+  color: white;
+  font-size: 13px;
+  outline: none;
+}
+
+input:focus {
+  border-color: #7C3AED;
+}
+
+/* BOTÃO */
+button {
+  width: 100%;
+  padding: 10px;
+
+  border: none;
+  border-radius: 8px;
+
+  background: #1E293B;
+  color: white;
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+button:hover {
+  background: #334155;
+}

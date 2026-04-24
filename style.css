@@ -1,3 +1,6 @@
+/* ========================= */
+/* RESET */
+/* ========================= */
 * {
   margin: 0;
   padding: 0;
@@ -11,12 +14,12 @@
 body {
   height: 100vh;
   overflow: hidden;
-  background: radial-gradient(circle at top left, #0B0F1A, #020617 60%);
+  background: radial-gradient(circle at top left, #0B0F1A, #020617 70%);
   color: #F8FAFC;
 }
 
 /* ========================= */
-/* LAYOUT */
+/* CONTAINER */
 /* ========================= */
 .container {
   display: flex;
@@ -28,9 +31,11 @@ body {
 /* ========================= */
 .sidebar {
   width: 230px;
-  background: #020617;
+  background: rgba(2, 6, 23, 0.85);
+  backdrop-filter: blur(12px);
+
   padding: 18px;
-  border-right: 1px solid #1E293B;
+  border-right: 1px solid rgba(30, 41, 59, 0.6);
 
   display: flex;
   flex-direction: column;
@@ -40,29 +45,13 @@ body {
 /* LOGO */
 .logo-box {
   display: flex;
-  gap: 10px;
   align-items: center;
-  margin-bottom: 25px;
+  gap: 8px;
+  margin-bottom: 20px;
 }
 
-.logo {
-  width: 36px;
-  height: 36px;
-  background: linear-gradient(135deg, #7C3AED, #06B6D4);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 10px;
-  font-weight: bold;
-}
-
-.logo-box strong {
-  font-size: 14px;
-}
-
-.logo-box p {
-  font-size: 11px;
-  color: #94A3B8;
+.logo-box img {
+  width: 38px;
 }
 
 /* NAV */
@@ -70,16 +59,17 @@ body {
   display: block;
   padding: 10px;
   margin-bottom: 6px;
-  border-radius: 8px;
+  border-radius: 10px;
   text-decoration: none;
   color: #94A3B8;
   font-size: 13px;
-  transition: 0.2s;
+  transition: 0.2s ease;
 }
 
 .sidebar nav a:hover {
-  background: #1E293B;
+  background: rgba(30, 41, 59, 0.7);
   color: white;
+  transform: translateX(3px);
 }
 
 .sidebar .active {
@@ -87,9 +77,11 @@ body {
   color: white;
 }
 
+/* ========================= */
 /* PLAN BOX */
+/* ========================= */
 .plan-box {
-  border: 1px solid #1E293B;
+  border: 1px solid rgba(30, 41, 59, 0.6);
   border-radius: 10px;
   padding: 12px;
   font-size: 12px;
@@ -109,34 +101,33 @@ body {
   background: #1E293B;
   border-radius: 10px;
   margin: 8px 0;
+  overflow: hidden;
 }
 
 .bar {
   width: 60%;
   height: 100%;
   background: linear-gradient(90deg, #7C3AED, #06B6D4);
-  border-radius: 10px;
 }
 
 .plan-box button {
   width: 100%;
   padding: 6px;
-  border: none;
   border-radius: 6px;
   background: linear-gradient(135deg, #7C3AED, #06B6D4);
   color: white;
   font-size: 12px;
-  cursor: pointer;
 }
 
 /* ========================= */
-/* MAIN */
+/* MAIN (SEM SCROLL) */
 /* ========================= */
 .main {
   flex: 1;
-  padding: 15px;
+  padding: 18px;
   display: flex;
   flex-direction: column;
+  height: 100vh;
   overflow: hidden;
 }
 
@@ -147,11 +138,12 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 .topbar h1 {
-  font-size: 18px;
+  font-size: 20px;
+  font-weight: 600;
 }
 
 .topbar p {
@@ -159,25 +151,28 @@ body {
   color: #94A3B8;
 }
 
-/* ACTIONS */
-.top-actions {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
 /* SEARCH */
 .search {
-  padding: 6px 12px;
+  padding: 7px 14px;
   border-radius: 20px;
   border: 1px solid #1E293B;
-  background: #020617;
+  background: rgba(2, 6, 23, 0.8);
   color: white;
   font-size: 12px;
+  outline: none;
 }
 
+.search:focus {
+  border-color: #7C3AED;
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+}
+
+/* ========================= */
 /* USER */
+/* ========================= */
 .user-box {
+  position: relative;
+  cursor: pointer;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -197,6 +192,24 @@ body {
   color: #94A3B8;
 }
 
+/* MENU */
+.user-menu {
+  position: absolute;
+  right: 0;
+  top: 60px;
+  background: #0F172A;
+  border: 1px solid #1E293B;
+  padding: 12px;
+  border-radius: 10px;
+  width: 180px;
+  display: none;
+  z-index: 100;
+}
+
+.user-menu.active {
+  display: block;
+}
+
 /* ========================= */
 /* CARDS */
 /* ========================= */
@@ -208,61 +221,73 @@ body {
 }
 
 .card {
-  background: #020617;
-  padding: 12px;
-  border-radius: 10px;
-  border: 1px solid #1E293B;
+  background: rgba(2, 6, 23, 0.9);
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(30, 41, 59, 0.6);
 
   display: flex;
   gap: 10px;
   align-items: center;
+
+  transition: 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  border-color: #7C3AED;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
 }
 
 .icon {
   background: linear-gradient(135deg, #7C3AED, #06B6D4);
-  padding: 8px;
-  border-radius: 8px;
-  font-size: 14px;
-}
-
-.card span {
-  font-size: 11px;
-  color: #94A3B8;
-}
-
-.card h2 {
-  font-size: 16px;
+  padding: 9px;
+  border-radius: 10px;
 }
 
 /* ========================= */
-/* GRID */
+/* GRID FIXADO (SEM SCROLL) */
 /* ========================= */
 .grid {
   display: grid;
   grid-template-columns: 2fr 1fr;
   grid-template-rows: 1fr 1fr;
   gap: 10px;
+
   flex: 1;
+  min-height: 0;
+  height: 100%;
+}
+
+/* BOX */
+.box {
+  background: rgba(2, 6, 23, 0.85);
+  border: 1px solid rgba(30, 41, 59, 0.6);
+  border-radius: 12px;
+  padding: 12px;
+
+  overflow: hidden;
   min-height: 0;
 }
 
-/* ========================= */
-/* BOX */
-/* ========================= */
-.box {
-  background: #020617;
-  border: 1px solid #1E293B;
-  border-radius: 10px;
-  padding: 10px;
+/* TITULO BOX */
+.box h3 {
+  font-size: 12px;
+  margin-bottom: 8px;
+}
 
+/* ========================= */
+/* GRÁFICO CONTROLADO */
+/* ========================= */
+.box-grafico {
   display: flex;
   flex-direction: column;
   min-height: 0;
 }
 
-.box h3 {
-  font-size: 12px;
-  margin-bottom: 8px;
+canvas {
+  max-height: 160px !important;
+  width: 100% !important;
 }
 
 /* ========================= */
@@ -272,16 +297,33 @@ ul {
   list-style: none;
   overflow-y: auto;
   flex: 1;
+  scrollbar-width: thin;
+  scrollbar-color: #7C3AED transparent;
+}
+
+ul::-webkit-scrollbar {
+  width: 6px;
+}
+
+ul::-webkit-scrollbar-thumb {
+  background: #7C3AED;
+  border-radius: 10px;
 }
 
 li {
   font-size: 11px;
-  padding: 6px;
+  padding: 8px;
   border-bottom: 1px solid #1E293B;
 
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  transition: 0.2s;
+}
+
+li:hover {
+  background: rgba(30, 41, 59, 0.2);
 }
 
 /* ========================= */
@@ -304,16 +346,9 @@ li {
 }
 
 /* ========================= */
-/* BOTÕES */
+/* BUTTON RESET */
 /* ========================= */
 button {
   cursor: pointer;
   border: none;
-}
-
-/* ========================= */
-/* GRÁFICO */
-/* ========================= */
-canvas {
-  max-height: 180px !important;
 }

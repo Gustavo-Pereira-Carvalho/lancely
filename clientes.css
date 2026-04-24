@@ -22,7 +22,9 @@ body {
 /* SIDEBAR */
 .sidebar {
   width: 220px;
-  background: #020617;
+  background: rgba(2, 6, 23, 0.85);
+  backdrop-filter: blur(10px);
+
   padding: 18px;
   border-right: 1px solid #1E293B;
 
@@ -52,11 +54,13 @@ body {
   text-decoration: none;
   border-radius: 8px;
   font-size: 13px;
+  transition: 0.2s;
 }
 
 .sidebar nav a:hover {
   background: #1E293B;
   color: white;
+  transform: translateX(2px);
 }
 
 .sidebar .active {
@@ -67,18 +71,20 @@ body {
 /* MAIN */
 .main {
   flex: 1;
-  padding: 20px;
+  padding: 24px;
 }
 
 /* TOPBAR */
 .topbar {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
 .topbar h1 {
-  font-size: 18px;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
 }
 
 /* SEARCH */
@@ -90,10 +96,12 @@ body {
   color: white;
   font-size: 12px;
   outline: none;
+  transition: 0.2s;
 }
 
 .search:focus {
   border-color: #7C3AED;
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
 }
 
 /* BOX */
@@ -103,6 +111,8 @@ body {
   border-radius: 12px;
   padding: 16px;
   margin-bottom: 15px;
+
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
 }
 
 .box h3 {
@@ -125,10 +135,12 @@ body {
   color: white;
   font-size: 13px;
   outline: none;
+  transition: 0.2s;
 }
 
 .form-row input:focus {
   border-color: #7C3AED;
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
 }
 
 /* BOTÃO */
@@ -144,7 +156,8 @@ button {
 }
 
 button:hover {
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  opacity: 0.95;
 }
 
 /* LISTA */
@@ -152,11 +165,12 @@ ul {
   list-style: none;
 }
 
+/* ITEM */
 li {
   background: #020617;
   border: 1px solid #1E293B;
-  padding: 10px;
-  border-radius: 8px;
+  padding: 12px;
+  border-radius: 10px;
   margin-bottom: 8px;
 
   display: flex;
@@ -164,23 +178,30 @@ li {
   align-items: center;
 
   font-size: 13px;
-  transition: 0.2s;
+  transition: 0.2s ease;
 }
 
+/* HOVER MAIS PREMIUM */
 li:hover {
+  transform: translateY(-2px);
   border-color: #7C3AED;
+  background: #0B1220;
 }
 
 /* BOTÃO DELETE */
 li button {
-  background: transparent;
-  border: 1px solid #1E293B;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #F87171;
+
   padding: 5px 8px;
   border-radius: 6px;
   font-size: 11px;
+
+  transition: 0.2s;
 }
 
 li button:hover {
-  background: rgba(255, 0, 0, 0.2);
-  border-color: red;
+  background: rgba(239, 68, 68, 0.25);
+  transform: scale(1.05);
 }

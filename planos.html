@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Planos - Lancely</title>
+  <link rel="stylesheet" href="planos.css">
+</head>
+
+<body>
+
+<div class="container">
+
+  <h1>Escolha seu plano</h1>
+  <p class="sub">Desbloqueie mais recursos no seu dashboard</p>
+
+  <div class="cards">
+
+    <!-- FREE -->
+    <div class="card">
+      <h2>Free</h2>
+      <p class="price">R$0</p>
+
+      <ul>
+        <li>✔ 5 projetos</li>
+        <li>✔ 5 clientes</li>
+        <li>✔ Dashboard básico</li>
+        <li>✖ IA</li>
+        <li>✖ relatórios avançados</li>
+      </ul>
+
+      <button onclick="voltar()">Usar grátis</button>
+    </div>
+
+    <!-- PRO -->
+    <div class="card pro">
+      <h2>Pro</h2>
+      <p class="price">R$29/mês</p>
+
+      <ul>
+        <li>✔ Projetos ilimitados</li>
+        <li>✔ Clientes ilimitados</li>
+        <li>✔ Dashboard completo</li>
+        <li>✔ Relatórios avançados</li>
+        <li>✔ IA básica (em breve)</li>
+      </ul>
+
+      <button onclick="ativarPlano()">Ativar Pro</button>
+    </div>
+
+  </div>
+
+</div>
+
+<script src="js/planos.js"></script>
+</body>
+</html>

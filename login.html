@@ -1,26 +1,50 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
-  <title>Login - Lancely</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lancely - Login</title>
+
   <link rel="stylesheet" href="login.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 
 <body>
 
-<div class="login-wrapper">
+<div class="container">
 
-  <div class="login-box">
-    <h2>Lancely</h2>
+  <div class="card-wrapper" id="cardWrapper">
 
-    <input type="email" id="email" placeholder="Email">
-    <input type="password" id="senha" placeholder="Senha">
+    <!-- LOGIN -->
+    <div class="card login">
+      <h2>Entrar</h2>
 
-    <button onclick="login()">Entrar</button>
-    <button onclick="register()">Criar conta</button>
+      <input id="loginEmail" type="email" placeholder="Email">
+      <input id="loginSenha" type="password" placeholder="Senha">
+
+      <button onclick="login()">Entrar</button>
+
+      <p onclick="toggleCard()">Criar conta</p>
+    </div>
+
+    <!-- REGISTER -->
+    <div class="card register">
+      <h2>Criar conta</h2>
+
+      <input id="registerNome" placeholder="Nome">
+      <input id="registerEmail" type="email" placeholder="Email">
+      <input id="registerSenha" type="password" placeholder="Senha">
+
+      <button onclick="register()">Criar conta</button>
+
+      <p onclick="toggleCard()">Já tenho conta</p>
+    </div>
+
   </div>
 
 </div>
 
-<script src="js/main.js"></script>
+<script type="module" src="js/auth.js"></script>
+
 </body>
 </html>
