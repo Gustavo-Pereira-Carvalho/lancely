@@ -2,6 +2,7 @@ import { carregarProjetos, getProjetos } from "./projetos.js";
 import { carregarClientes, getClientes } from "./clientes.js";
 
 let chart;
+let periodo = 30;
 
 // =========================
 // INIT
@@ -14,14 +15,13 @@ async function initDashboard() {
     await carregarClientes();
     await carregarPlanoAtual();
     atualizarDashboard();
-    aplicarBloqueiosPorPlano();
   } catch (err) {
     console.error("Erro initDashboard:", err);
   }
 }
 
 // =========================
-// USUÁRIO (HEADER)
+// USUÁRIO
 // =========================
 const nome = localStorage.getItem("nome");
 
@@ -34,10 +34,11 @@ if (nome) {
 }
 
 // =========================
-// PLANO (SYNC BACKEND)
+// PLANO
 // =========================
 async function carregarPlanoAtual() {
   const token = localStorage.getItem("token");
+
   if (!token) return;
 
   try {
@@ -52,36 +53,42 @@ async function carregarPlanoAtual() {
     }
 
     const planTitle = document.querySelector(".plan-box h4");
+    const filtros = document.getElementById("filtros");
+    const badge = document.getElementById("badgePro");
 
     if (planTitle) {
       planTitle.innerText =
         user.plano.tipo === "pro" ? "Plano Pro" : "Plano Free";
     }
 
-    return user.plano.tipo;
+    // 🚀 LIBERAÇÕES DO PRO
+    if (user.plano.tipo === "pro") {
+      if (filtros) filtros.style.display = "flex";
+      if (badge) badge.innerText = "PRO";
+    } else {
+      if (filtros) filtros.style.display = "none";
+      if (badge) badge.innerText = "";
+    }
 
   } catch (err) {
-    console.error("Erro ao carregar plano:", err);
-    return "free";
+    console.error("Erro plano:", err);
   }
 }
 
 // =========================
-// BLOQUEIO DE UI (SAAS REAL)
+// FILTRO PRO (GLOBAL)
 // =========================
-function aplicarBloqueiosPorPlano() {
-  const plano = localStorage.getItem("plano") || "free";
-
-  if (plano !== "pro") {
-    document.querySelectorAll("[data-premium]").forEach(el => {
-      el.style.opacity = "0.5";
-      el.style.pointerEvents = "none";
-    });
+window.setPeriodo = function (p) {
+  if (localStorage.getItem("plano") !== "pro") {
+    return alert("Disponível apenas no plano PRO 🚀");
   }
-}
+
+  periodo = p;
+  atualizarDashboard();
+};
 
 // =========================
-// MAIN DASHBOARD
+// DASHBOARD
 // =========================
 export function atualizarDashboard() {
   const projetos = getProjetos();
@@ -101,24 +108,12 @@ export function atualizarDashboard() {
 // =========================
 function atualizarCards(projetos) {
   const mesAtual = new Date().getMonth();
-  const mesPassado = mesAtual - 1;
 
-  const atual = projetos
+  const ganhos = projetos
     .filter(p => p.pago && new Date(p.criadoEm).getMonth() === mesAtual)
     .reduce((t, p) => t + Number(p.valor), 0);
 
-  const passado = projetos
-    .filter(p => p.pago && new Date(p.criadoEm).getMonth() === mesPassado)
-    .reduce((t, p) => t + Number(p.valor), 0);
-
-  const diff = passado > 0 ? ((atual - passado) / passado) * 100 : 0;
-
-  document.getElementById("ganhos").innerHTML =
-    `R$ ${atual}
-     <span style="font-size:11px; margin-left:6px; color:${diff >= 0 ? "#22C55E" : "#EF4444"}">
-       ${diff.toFixed(0)}%
-     </span>`;
-
+  document.getElementById("ganhos").innerText = `R$ ${ganhos}`;
   document.getElementById("totalProjetos").innerText = projetos.length;
   document.getElementById("concluidos").innerText = projetos.filter(p => p.pago).length;
   document.getElementById("pendentes").innerText = projetos.filter(p => !p.pago).length;
@@ -128,43 +123,37 @@ function atualizarCards(projetos) {
 // PRAZOS
 // =========================
 function renderPrazos(projetos) {
-  const lista = document.querySelector(".box-prazos ul");
+  const lista = document.querySelector(".box:nth-child(3) ul");
   if (!lista) return;
 
   lista.innerHTML = "";
 
   const hoje = new Date();
 
-  const proximos = projetos
+  projetos
     .filter(p => p.prazo && !p.pago)
-    .map(p => ({
-      ...p,
-      prazoDate: new Date(p.prazo)
-    }))
-    .filter(p => !isNaN(p.prazoDate))
-    .sort((a, b) => a.prazoDate - b.prazoDate)
-    .slice(0, 5);
+    .sort((a, b) => new Date(a.prazo) - new Date(b.prazo))
+    .slice(0, 5)
+    .forEach(p => {
+      const dias = Math.ceil((new Date(p.prazo) - hoje) / 86400000);
 
-  proximos.forEach(p => {
-    const dias = Math.ceil((p.prazoDate - hoje) / (1000 * 60 * 60 * 24));
+      const li = document.createElement("li");
+      li.innerHTML = `
+        ${p.nome}
+        <span style="color:${dias <= 2 ? "#EF4444" : "#94A3B8"}">
+          ${dias >= 0 ? dias + " dias" : "Atrasado"}
+        </span>
+      `;
 
-    const li = document.createElement("li");
-    li.innerHTML = `
-      ${p.nome}
-      <span style="color:${dias <= 2 ? "#EF4444" : "#94A3B8"}">
-        ${dias >= 0 ? dias + " dias" : "Atrasado"}
-      </span>
-    `;
-
-    lista.appendChild(li);
-  });
+      lista.appendChild(li);
+    });
 }
 
 // =========================
-// TOP CLIENTES
+// CLIENTES (TOP)
 // =========================
 function renderTopClientes(projetos) {
-  const lista = document.querySelector(".box-clientes ul");
+  const lista = document.getElementById("listaClientes");
   if (!lista) return;
 
   lista.innerHTML = "";
@@ -176,15 +165,14 @@ function renderTopClientes(projetos) {
     mapa[p.clienteNome] = (mapa[p.clienteNome] || 0) + Number(p.valor);
   });
 
-  const top = Object.entries(mapa)
+  Object.entries(mapa)
     .sort((a, b) => b[1] - a[1])
-    .slice(0, 5);
-
-  top.forEach(([nome, valor]) => {
-    const li = document.createElement("li");
-    li.innerHTML = `${nome} <span>R$ ${valor}</span>`;
-    lista.appendChild(li);
-  });
+    .slice(0, 5)
+    .forEach(([nome, valor]) => {
+      const li = document.createElement("li");
+      li.innerHTML = `${nome} <span>R$ ${valor}</span>`;
+      lista.appendChild(li);
+    });
 }
 
 // =========================
@@ -196,9 +184,7 @@ function renderClientesRecentes() {
 
   lista.innerHTML = "";
 
-  const clientes = getClientes().slice(-5).reverse();
-
-  clientes.forEach(c => {
+  getClientes().slice(-5).reverse().forEach(c => {
     const li = document.createElement("li");
     li.innerHTML = `<strong>${c.nome}</strong>`;
     lista.appendChild(li);
@@ -218,17 +204,11 @@ function renderProjetosRecentes(projetos) {
     const li = document.createElement("li");
 
     li.innerHTML = `
-      <div>
-        <strong>${p.nome}</strong><br>
-        <small>${p.clienteNome || ""}</small>
-      </div>
-
-      <div>
-        <span style="color:${p.pago ? "#22C55E" : "#FACC15"}">
-          ${p.pago ? "✔" : "⏳"}
-        </span>
-        R$ ${p.valor}
-      </div>
+      <strong>${p.nome}</strong>
+      <span style="color:${p.pago ? "#22C55E" : "#FACC15"}">
+        ${p.pago ? "✔" : "⏳"}
+      </span>
+      R$ ${p.valor}
     `;
 
     lista.appendChild(li);
@@ -236,7 +216,7 @@ function renderProjetosRecentes(projetos) {
 }
 
 // =========================
-// GRÁFICO
+// GRÁFICO (FREE vs PRO)
 // =========================
 function renderGrafico(projetos) {
   const ctx = document.getElementById("grafico");
@@ -244,48 +224,153 @@ function renderGrafico(projetos) {
 
   if (chart) chart.destroy();
 
-  const meses = ["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"];
+  const isPro = localStorage.getItem("plano") === "pro";
+  const canvas = ctx;
 
-  const dados = new Array(12).fill(0);
+  // animação saída
+  canvas.style.transition = "all 0.2s ease";
+  canvas.style.opacity = "0.4";
+  canvas.style.transform = "scale(0.98)";
 
-  projetos.forEach(p => {
-    if (!p.pago) return;
+  let labels = [];
+  let dados = [];
 
-    const mes = new Date(p.criadoEm).getMonth();
-    dados[mes] += Number(p.valor);
-  });
+  // =========================
+  // FREE (sempre mensal)
+  // =========================
+  if (!isPro) {
+    labels = ["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"];
+    dados = new Array(12).fill(0);
 
+    projetos.forEach(p => {
+      if (!p.pago) return;
+      const mes = new Date(p.criadoEm).getMonth();
+      dados[mes] += Number(p.valor);
+    });
+  }
+
+  // =========================
+  // PRO
+  // =========================
+  else {
+    const hoje = new Date();
+
+    // 🔹 visão curta (7 / 30 dias)
+    if (periodo === 7 || periodo === 30) {
+      const dias = periodo;
+
+      for (let i = dias - 1; i >= 0; i--) {
+        const d = new Date();
+        d.setDate(hoje.getDate() - i);
+
+        labels.push(
+          d.toLocaleDateString("pt-BR", {
+            day: "2-digit",
+            month: "2-digit"
+          })
+        );
+
+        const total = projetos
+          .filter(p => {
+            if (!p.pago) return false;
+            const data = new Date(p.criadoEm);
+            return data.toDateString() === d.toDateString();
+          })
+          .reduce((t, p) => t + Number(p.valor), 0);
+
+        dados.push(total);
+      }
+    }
+
+    // 🔹 visão mensal (12 meses)
+    else {
+      labels = ["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"];
+      dados = new Array(12).fill(0);
+
+      projetos.forEach(p => {
+        if (!p.pago) return;
+        const mes = new Date(p.criadoEm).getMonth();
+        dados[mes] += Number(p.valor);
+      });
+    }
+  }
+
+  // =========================
+  // MÉDIA (PRO)
+  // =========================
+  let mediaDataset = null;
+
+  if (isPro && dados.length > 0) {
+    const media = dados.reduce((a, b) => a + b, 0) / dados.length;
+
+    mediaDataset = {
+      data: new Array(dados.length).fill(media),
+      borderColor: "#06B6D4",
+      borderDash: [6, 6],
+      pointRadius: 0,
+      fill: false
+    };
+  }
+
+  // =========================
+  // CHART
+  // =========================
   chart = new Chart(ctx, {
     type: "line",
     data: {
-      labels: meses,
-      datasets: [{
-        data: dados,
-        borderColor: "#7C3AED",
-        backgroundColor: "rgba(124,58,237,0.08)",
-        fill: true,
-        tension: 0.4
-      }]
+      labels,
+      datasets: [
+        {
+          data: dados,
+          borderColor: "#7C3AED",
+          backgroundColor: "rgba(124,58,237,0.15)",
+          fill: true,
+          tension: 0.45,
+          pointRadius: 3,
+          pointHoverRadius: 6,
+          borderWidth: 2
+        },
+        ...(mediaDataset ? [mediaDataset] : [])
+      ]
     },
+
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      plugins: {
-        legend: { display: false }
+
+      animation: {
+        duration: 800,
+        easing: "easeOutQuart"
       },
+
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          mode: "index",
+          intersect: false
+        }
+      },
+
+      interaction: {
+        mode: "index",
+        intersect: false
+      },
+
       scales: {
-        y: { beginAtZero: true },
-        x: { grid: { display: false } }
+        y: {
+          beginAtZero: true,
+          ticks: { precision: 0 }
+        },
+        x: {
+          grid: { display: false }
+        }
       }
     }
   });
-}
 
-// =========================
-// BOTÃO PLANOS
-// =========================
-function irPlanos() {
-  window.location.href = "planos.html";
+  // animação entrada
+  setTimeout(() => {
+    canvas.style.opacity = "1";
+    canvas.style.transform = "scale(1)";
+  }, 60);
 }
-
-window.irPlanos = irPlanos;

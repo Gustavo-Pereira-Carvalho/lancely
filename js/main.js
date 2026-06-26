@@ -39,7 +39,6 @@ async function carregarUsuario() {
     if (!user || user.erro) return;
 
     setText("userNome", user.nome);
-    setText("userEmail", user.email);
     setText("menuNome", user.nome);
     setText("menuEmail", user.email);
 
@@ -56,6 +55,18 @@ function toggleUserMenu() {
   if (menu) menu.classList.toggle("active");
 }
 
+// FECHAR AO CLICAR FORA
+document.addEventListener("click", (e) => {
+  const menu = $("userMenu");
+  const userBox = document.querySelector(".user-box");
+
+  if (!menu || !userBox) return;
+
+  if (!userBox.contains(e.target)) {
+    menu.classList.remove("active");
+  }
+});
+
 function logout() {
   localStorage.clear();
   window.location.href = "login.html";
@@ -69,7 +80,6 @@ function irPlanos() {
   window.location.href = "planos.html";
 }
 
-// expõe no window
 window.toggleUserMenu = toggleUserMenu;
 window.logout = logout;
 window.irPerfil = irPerfil;
@@ -84,11 +94,13 @@ async function init() {
 
   const url = window.location.href;
 
+  // 🔥 CLIENTES (FALTAVA ISSO)
   if (url.includes("clientes")) {
     const clientes = await import("./clientes.js");
     await clientes.carregarClientes();
   }
 
+  // 🔥 PROJETOS
   if (url.includes("projetos")) {
     const clientes = await import("./clientes.js");
     const projetos = await import("./projetos.js");
@@ -97,6 +109,7 @@ async function init() {
     await projetos.carregarProjetos();
   }
 
+  // 🔥 DASHBOARD
   if (url.includes("dashboard")) {
     const clientes = await import("./clientes.js");
     const projetos = await import("./projetos.js");

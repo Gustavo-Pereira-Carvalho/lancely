@@ -33,16 +33,13 @@ body {
   width: 230px;
   background: rgba(2, 6, 23, 0.85);
   backdrop-filter: blur(12px);
-
   padding: 18px;
   border-right: 1px solid rgba(30, 41, 59, 0.6);
-
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
 
-/* LOGO */
 .logo-box {
   display: flex;
   align-items: center;
@@ -54,7 +51,6 @@ body {
   width: 38px;
 }
 
-/* NAV */
 .sidebar nav a {
   display: block;
   padding: 10px;
@@ -117,10 +113,12 @@ body {
   background: linear-gradient(135deg, #7C3AED, #06B6D4);
   color: white;
   font-size: 12px;
+  border: none;
+  cursor: pointer;
 }
 
 /* ========================= */
-/* MAIN (SEM SCROLL) */
+/* MAIN */
 /* ========================= */
 .main {
   flex: 1;
@@ -143,7 +141,6 @@ body {
 
 .topbar h1 {
   font-size: 20px;
-  font-weight: 600;
 }
 
 .topbar p {
@@ -151,7 +148,6 @@ body {
   color: #94A3B8;
 }
 
-/* SEARCH */
 .search {
   padding: 7px 14px;
   border-radius: 20px;
@@ -160,11 +156,6 @@ body {
   color: white;
   font-size: 12px;
   outline: none;
-}
-
-.search:focus {
-  border-color: #7C3AED;
-  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
 }
 
 /* ========================= */
@@ -192,22 +183,49 @@ body {
   color: #94A3B8;
 }
 
-/* MENU */
+/* ========================= */
+/* USER MENU */
+/* ========================= */
 .user-menu {
   position: absolute;
   right: 0;
-  top: 60px;
+  top: 55px;
   background: #0F172A;
   border: 1px solid #1E293B;
-  padding: 12px;
   border-radius: 10px;
+  padding: 12px;
   width: 180px;
   display: none;
-  z-index: 100;
+  z-index: 999;
 }
 
 .user-menu.active {
   display: block;
+}
+
+.user-menu p {
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.user-menu small {
+  color: #94A3B8;
+  font-size: 10px;
+}
+
+.user-menu button {
+  width: 100%;
+  margin-top: 6px;
+  padding: 6px;
+  border-radius: 6px;
+  background: rgba(30,41,59,0.6);
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.user-menu button:hover {
+  background: #7C3AED;
 }
 
 /* ========================= */
@@ -225,38 +243,27 @@ body {
   padding: 14px;
   border-radius: 12px;
   border: 1px solid rgba(30, 41, 59, 0.6);
-
   display: flex;
   gap: 10px;
   align-items: center;
-
   transition: 0.2s;
 }
 
 .card:hover {
   transform: translateY(-3px);
   border-color: #7C3AED;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-}
-
-.icon {
-  background: linear-gradient(135deg, #7C3AED, #06B6D4);
-  padding: 9px;
-  border-radius: 10px;
 }
 
 /* ========================= */
-/* GRID FIXADO (SEM SCROLL) */
+/* GRID */
 /* ========================= */
 .grid {
   display: grid;
   grid-template-columns: 2fr 1fr;
   grid-template-rows: 1fr 1fr;
   gap: 10px;
-
   flex: 1;
   min-height: 0;
-  height: 100%;
 }
 
 /* BOX */
@@ -265,55 +272,85 @@ body {
   border: 1px solid rgba(30, 41, 59, 0.6);
   border-radius: 12px;
   padding: 12px;
-
   overflow: hidden;
-  min-height: 0;
-}
-
-/* TITULO BOX */
-.box h3 {
-  font-size: 12px;
-  margin-bottom: 8px;
+  display: flex;
+  flex-direction: column;
 }
 
 /* ========================= */
-/* GRÁFICO CONTROLADO */
+/* GRÁFICO HEADER */
+/* ========================= */
+.grafico-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+/* BADGE PRO */
+.badge-pro {
+  font-size: 10px;
+  color: #06B6D4;
+  margin-left: 6px;
+}
+
+/* ========================= */
+/* FILTROS PRO */
+/* ========================= */
+.filtros {
+  display: flex;
+  gap: 6px;
+}
+
+.filtros button {
+  background: #1E293B;
+  color: #94A3B8;
+  border: 1px solid #334155;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.filtros button:hover {
+  background: #7C3AED;
+  color: white;
+  border-color: #7C3AED;
+}
+
+/* ========================= */
+/* GRÁFICO */
 /* ========================= */
 .box-grafico {
   display: flex;
   flex-direction: column;
-  min-height: 0;
 }
 
 canvas {
-  max-height: 160px !important;
+  max-height: 170px !important;
   width: 100% !important;
 }
 
 /* ========================= */
-/* LISTAS */
+/* LISTAS MODERNAS (PRO) */
 /* ========================= */
 ul {
   list-style: none;
   overflow-y: auto;
   flex: 1;
-  scrollbar-width: thin;
-  scrollbar-color: #7C3AED transparent;
+  padding-right: 4px;
 }
 
-ul::-webkit-scrollbar {
-  width: 6px;
-}
-
-ul::-webkit-scrollbar-thumb {
-  background: #7C3AED;
-  border-radius: 10px;
-}
-
+/* ITEM STYLE CARD */
 li {
   font-size: 11px;
-  padding: 8px;
-  border-bottom: 1px solid #1E293B;
+  padding: 10px;
+  margin-bottom: 6px;
+
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(30, 41, 59, 0.6);
+  border-radius: 10px;
 
   display: flex;
   justify-content: space-between;
@@ -323,32 +360,28 @@ li {
 }
 
 li:hover {
-  background: rgba(30, 41, 59, 0.2);
+  transform: translateX(3px);
+  border-color: #7C3AED;
+  background: rgba(30, 41, 59, 0.3);
 }
 
-/* ========================= */
-/* BADGE */
-/* ========================= */
-.badge {
-  padding: 2px 6px;
-  border-radius: 10px;
+li strong {
+  color: #F8FAFC;
+}
+
+li span {
   font-size: 10px;
-}
-
-.pago {
-  background: rgba(34, 197, 94, 0.2);
-  color: #22C55E;
-}
-
-.pendente {
-  background: rgba(250, 204, 21, 0.2);
-  color: #FACC15;
+  color: #94A3B8;
 }
 
 /* ========================= */
-/* BUTTON RESET */
+/* SCROLLBAR */
 /* ========================= */
-button {
-  cursor: pointer;
-  border: none;
+ul::-webkit-scrollbar {
+  width: 5px;
+}
+
+ul::-webkit-scrollbar-thumb {
+  background: #7C3AED;
+  border-radius: 10px;
 }

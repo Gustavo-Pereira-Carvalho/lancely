@@ -3,28 +3,24 @@ import { getClientes, carregarClientes } from "./clientes.js";
 let projetos = [];
 let filtroAtual = "todos";
 
-// =========================
-// GETTER
-// =========================
+function isPro() {
+  return localStorage.getItem("plano") === "pro";
+}
+
 export function getProjetos() {
   return projetos;
 }
 
-// =========================
-// CARREGAR PROJETOS
-// =========================
 export async function carregarProjetos() {
   const res = await fetch("http://localhost:3000/projetos", {
     headers: { Authorization: localStorage.getItem("token") }
   });
 
   projetos = await res.json();
+  atualizarLimiteProjetos();
   renderProjetos();
 }
 
-// =========================
-// ADICIONAR PROJETO
-// =========================
 export async function addProjeto() {
   const nome = document.getElementById("projetoNome").value;
   const valor = Number(document.getElementById("projetoValor").value);
@@ -35,10 +31,15 @@ export async function addProjeto() {
     await carregarClientes();
   }
 
+  // 🚨 LIMITE FREE
+  if (!isPro() && projetos.length >= 5) {
+    return alert("Limite FREE atingido (5 projetos). Faça upgrade 🚀");
+  }
+
   const cliente = getClientes().find(c => c._id === clienteId);
 
   if (!nome || !valor || !cliente || !prazo) {
-    return alert("Preencha tudo (incluindo a data)");
+    return alert("Preencha tudo");
   }
 
   await fetch("http://localhost:3000/projetos", {
@@ -51,22 +52,14 @@ export async function addProjeto() {
       nome,
       valor,
       pago: false,
-      clienteId,
       clienteNome: cliente.nome,
       prazo: new Date(prazo)
     })
   });
 
-  document.getElementById("projetoNome").value = "";
-  document.getElementById("projetoValor").value = "";
-  document.getElementById("projetoPrazo").value = "";
-
   carregarProjetos();
 }
 
-// =========================
-// TOGGLE (PAGO / PENDENTE)
-// =========================
 export async function toggleProjeto(id) {
   await fetch(`http://localhost:3000/projetos/${id}`, {
     method: "PUT",
@@ -76,9 +69,6 @@ export async function toggleProjeto(id) {
   carregarProjetos();
 }
 
-// =========================
-// REMOVER
-// =========================
 export async function removerProjeto(id) {
   await fetch(`http://localhost:3000/projetos/${id}`, {
     method: "DELETE",
@@ -88,17 +78,20 @@ export async function removerProjeto(id) {
   carregarProjetos();
 }
 
-// =========================
-// FILTRO (GLOBAL)
-// =========================
+function atualizarLimiteProjetos() {
+  const texto = document.querySelector(".plan-box p");
+  if (!texto) return;
+
+  if (!isPro()) {
+    texto.innerText += ` • ${projetos.length}/5 projetos`;
+  }
+}
+
 window.filtrarProjetos = function (tipo) {
   filtroAtual = tipo;
   renderProjetos();
 };
 
-// =========================
-// RENDER LISTA
-// =========================
 function renderProjetos() {
   const lista = document.getElementById("listaProjetos");
   if (!lista) return;
@@ -107,13 +100,8 @@ function renderProjetos() {
 
   let filtrados = projetos;
 
-  if (filtroAtual === "pagos") {
-    filtrados = projetos.filter(p => p.pago);
-  }
-
-  if (filtroAtual === "pendentes") {
-    filtrados = projetos.filter(p => !p.pago);
-  }
+  if (filtroAtual === "pagos") filtrados = projetos.filter(p => p.pago);
+  if (filtroAtual === "pendentes") filtrados = projetos.filter(p => !p.pago);
 
   filtrados.forEach(p => {
     const li = document.createElement("li");
@@ -121,16 +109,11 @@ function renderProjetos() {
     li.innerHTML = `
       <div>
         <strong>${p.nome}</strong><br>
-        <small>${p.clienteNome || "Sem cliente"}</small><br>
-        <small>${p.prazo ? new Date(p.prazo).toLocaleDateString() : "Sem prazo"}</small>
+        <small>${p.clienteNome || ""}</small>
       </div>
 
       <div>
-        <span>${p.pago ? "✔" : "⏳"}</span>
-        R$ ${p.valor}
-
-        <button onclick="toggleProjeto('${p._id}')">✔</button>
-        <button onclick="removerProjeto('${p._id}')">X</button>
+        ${p.pago ? "✔" : "⏳"} R$ ${p.valor}
       </div>
     `;
 
@@ -138,9 +121,6 @@ function renderProjetos() {
   });
 }
 
-// =========================
-// GLOBAL EXPORTS (HTML onclick)
-// =========================
 window.addProjeto = addProjeto;
 window.toggleProjeto = toggleProjeto;
 window.removerProjeto = removerProjeto;
