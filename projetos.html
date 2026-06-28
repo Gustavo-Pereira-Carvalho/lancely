@@ -12,6 +12,7 @@
   <!-- SIDEBAR -->
   <aside class="sidebar">
     <div>
+
       <div class="logo-box">
         <img src="assets/logo.png">
         <span>Lancely</span>
@@ -22,6 +23,7 @@
         <a href="clientes.html">Clientes</a>
         <a href="projetos.html" class="active">Projetos</a>
       </nav>
+
     </div>
   </aside>
 
@@ -30,34 +32,68 @@
 
     <!-- TOPBAR -->
     <div class="topbar">
+
       <h1>Projetos</h1>
 
       <div class="top-actions">
-        <input placeholder="Buscar..." class="search">
+        <input
+          class="search"
+          type="text"
+          placeholder="Buscar..."
+        >
       </div>
+
     </div>
 
-    <!-- FORM -->
+    <!-- NOVO PROJETO -->
     <div class="box">
+
       <h3>Novo Projeto</h3>
 
       <div class="form-row">
-        <input type="text" id="projetoNome" placeholder="Nome do projeto">
-        <input type="number" id="projetoValor" placeholder="Valor">
+
+        <input
+          id="projetoNome"
+          type="text"
+          placeholder="Nome do projeto"
+        >
+
+        <input
+          id="projetoValor"
+          type="number"
+          placeholder="Valor"
+        >
+
         <select id="clienteSelect"></select>
 
-        <!-- 🔥 NOVO -->
-        <input type="date" id="projetoPrazo">
+        <input
+          id="projetoPrazo"
+          type="date"
+        >
 
-        <button onclick="addProjeto()">Adicionar</button>
+        <button id="btnAddProjeto">
+          Adicionar
+        </button>
+
       </div>
+
     </div>
 
     <!-- FILTROS -->
     <div class="filtros">
-      <button onclick="filtrarProjetos('todos')">Todos</button>
-      <button onclick="filtrarProjetos('pendentes')">Pendentes</button>
-      <button onclick="filtrarProjetos('pagos')">Pagos</button>
+
+      <button onclick="filtrarProjetos('todos')">
+        Todos
+      </button>
+
+      <button onclick="filtrarProjetos('pendentes')">
+        Pendentes
+      </button>
+
+      <button onclick="filtrarProjetos('pagos')">
+        Pagos
+      </button>
+
     </div>
 
     <!-- LISTA -->
@@ -70,5 +106,6 @@
 </div>
 
 <script type="module" src="js/main.js"></script>
+
 </body>
 </html>
