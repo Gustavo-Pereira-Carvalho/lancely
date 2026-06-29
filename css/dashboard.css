@@ -1,0 +1,242 @@
+
+
+/* ==========================================
+   DASHBOARD
+========================================== */
+
+/* GRID */
+
+.grid{
+    flex:1;
+
+    display:grid;
+
+    grid-template-columns:2fr 1fr;
+    grid-template-rows:360px 1fr;
+
+    gap:12px;
+
+    min-height:0;
+    height:100%;
+}
+
+/* ==========================================
+   CARDS
+========================================== */
+
+.cards{
+
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:12px;
+
+    margin-bottom:12px;
+
+    flex-shrink:0;
+
+}
+
+.card{
+    background:rgba(2,6,23,.9);
+
+    border:1px solid rgba(30,41,59,.6);
+
+    border-radius:18px;
+
+    padding:20px;
+
+    display:flex;
+    align-items:center;
+
+    gap:16px;
+
+    transition:.2s;
+}
+
+.card:hover{
+    transform:translateY(-3px);
+    border-color:#8B5CF6;
+}
+
+.card-info span{
+    color:var(--text-secondary);
+    font-size:13px;
+}
+
+.card-info h2{
+    color:#fff;
+    font-size:30px;
+    font-weight:700;
+    margin-top:4px;
+}
+
+.card-img{
+    height:56px;
+    object-fit:contain;
+    flex-shrink:0;
+}
+
+/* ==========================================
+   BOXES
+========================================== */
+
+.box{
+    background:rgba(2,6,23,.9);
+    border:1px solid rgba(30,41,59,.6);
+    border-radius:18px;
+    padding:20px;
+
+    display:flex;
+    flex-direction:column;
+
+    min-height:0;
+    overflow:hidden;
+}
+
+.box h3{
+    color:#fff;
+    font-size:20px;
+    font-weight:600;
+    margin-bottom:18px;
+}
+
+/* ==========================================
+   LISTAS
+========================================== */
+
+.grid ul{
+    flex:1;
+    overflow-y:auto;
+    min-height:0;
+
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+
+    padding:0;
+    margin:0;
+
+    list-style:none;
+}
+
+.grid li{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:14px 16px;
+
+    background:rgba(255,255,255,.02);
+
+    border:1px solid rgba(255,255,255,.05);
+
+    border-radius:14px;
+
+    transition:.2s;
+}
+
+.grid li:hover{
+    background:rgba(255,255,255,.04);
+    border-color:rgba(139,92,246,.35);
+    transform:translateY(-2px);
+}
+
+/* ==========================================
+   PROJETOS
+========================================== */
+
+.projeto-info{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+}
+
+.projeto-nome{
+    color:#fff;
+    font-size:14px;
+    font-weight:600;
+}
+
+.projeto-sub{
+    color:var(--text-secondary);
+    font-size:13px;
+}
+
+.status-badge{
+    padding:6px 12px;
+    border-radius:999px;
+
+    font-size:12px;
+    font-weight:600;
+
+    white-space:nowrap;
+}
+
+.status-pago{
+    background:rgba(34,197,94,.12);
+    color:#22C55E;
+}
+
+.status-pendente{
+    background:rgba(249,115,22,.12);
+    color:#FB923C;
+}
+
+/* ==========================================
+   GRÁFICO
+========================================== */
+
+.box-grafico{
+    display:flex;
+    flex-direction:column;
+}
+
+.grafico-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:14px;
+}
+
+#grafico{
+    width:100% !important;
+    flex:1;
+    min-height:0;
+}
+
+/* ==========================================
+   RESPONSIVO
+========================================== */
+
+@media(max-width:1200px){
+
+.cards{
+
+grid-template-columns:repeat(2,1fr);
+
+}
+
+}
+
+@media(max-width:900px){
+
+.grid{
+
+grid-template-columns:1fr;
+grid-template-rows:auto;
+
+}
+
+}
+
+@media(max-width:700px){
+
+.cards{
+
+grid-template-columns:1fr;
+
+}
+
+}

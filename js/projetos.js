@@ -3,6 +3,7 @@ import { getClientes, carregarClientes } from "./clientes.js";
 let projetos = [];
 let filtroAtual = "todos";
 let projetoEditando = null;
+let textoBusca = "";
 
 function isPro() {
   return localStorage.getItem("plano") === "pro";
@@ -19,6 +20,20 @@ const btn = document.getElementById("btnAddProjeto");
 
 if (btn) {
   btn.addEventListener("click", salvarProjeto);
+}
+
+const busca = document.getElementById("buscarProjeto");
+
+if (busca) {
+
+    busca.addEventListener("input", e => {
+
+        textoBusca = e.target.value.toLowerCase();
+
+        renderProjetos();
+
+    });
+
 }
 
 // =========================
@@ -187,9 +202,27 @@ function atualizarLimiteProjetos() {
 
 }
 
-window.filtrarProjetos = function(tipo) {
-  filtroAtual = tipo;
-  renderProjetos();
+window.filtrarProjetos = function (tipo) {
+
+    filtroAtual = tipo;
+
+    document
+        .querySelectorAll(".filtros button")
+        .forEach(btn => btn.classList.remove("active"));
+
+    const indice = {
+        todos:0,
+        pendentes:1,
+        pagos:2
+    };
+
+    document
+        .querySelectorAll(".filtros button")
+        [indice[tipo]]
+        .classList.add("active");
+
+    renderProjetos();
+
 };
 
 // =========================
@@ -203,15 +236,31 @@ function renderProjetos() {
 
   lista.innerHTML = "";
 
-  let filtrados = projetos;
+let filtrados = [...projetos];
 
-  if (filtroAtual === "pagos") {
-    filtrados = projetos.filter(p => p.pago);
-  }
+if (filtroAtual === "pagos") {
 
-  if (filtroAtual === "pendentes") {
-    filtrados = projetos.filter(p => !p.pago);
-  }
+    filtrados = filtrados.filter(p => p.pago);
+
+}
+
+if (filtroAtual === "pendentes") {
+
+    filtrados = filtrados.filter(p => !p.pago);
+
+}
+
+if (textoBusca) {
+
+    filtrados = filtrados.filter(p =>
+
+        p.nome.toLowerCase().includes(textoBusca) ||
+
+        p.clienteNome.toLowerCase().includes(textoBusca)
+
+    );
+
+}
 
   filtrados.forEach(projeto => {
 

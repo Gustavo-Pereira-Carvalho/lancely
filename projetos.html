@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>Projetos</title>
-  <link rel="stylesheet" href="projetos.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/projetos.css">
 </head>
 <body>
 
@@ -36,11 +37,12 @@
       <h1>Projetos</h1>
 
       <div class="top-actions">
-        <input
-          class="search"
-          type="text"
-          placeholder="Buscar..."
-        >
+       <input
+    id="buscarProjeto"
+    class="search"
+    type="text"
+    placeholder="Buscar projeto..."
+>
       </div>
 
     </div>
@@ -82,9 +84,9 @@
     <!-- FILTROS -->
     <div class="filtros">
 
-      <button onclick="filtrarProjetos('todos')">
-        Todos
-      </button>
+  <button class="active" onclick="filtrarProjetos('todos')">
+    Todos
+</button>
 
       <button onclick="filtrarProjetos('pendentes')">
         Pendentes

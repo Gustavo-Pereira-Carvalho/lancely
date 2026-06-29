@@ -203,14 +203,24 @@ function renderProjetosRecentes(projetos) {
   projetos.slice(-5).reverse().forEach(p => {
     const li = document.createElement("li");
 
-    li.innerHTML = `
-      <strong>${p.nome}</strong>
-      <span style="color:${p.pago ? "#22C55E" : "#FACC15"}">
-        ${p.pago ? "✔" : "⏳"}
-      </span>
-      R$ ${p.valor}
-    `;
+li.innerHTML = `
+    <div class="projeto-info">
+        <span class="projeto-nome">
+            ${p.nome}
+        </span>
 
+        <span class="projeto-sub">
+            R$ ${Number(p.valor).toLocaleString("pt-BR")}
+        </span>
+    </div>
+
+    <span class="
+        status-badge
+        ${p.pago ? "status-pago" : "status-pendente"}
+    ">
+        ${p.pago ? "Pago" : "Aguardando"}
+    </span>
+`;
     lista.appendChild(li);
   });
 }
@@ -312,61 +322,93 @@ function renderGrafico(projetos) {
     };
   }
 
-  // =========================
-  // CHART
-  // =========================
-  chart = new Chart(ctx, {
-    type: "line",
-    data: {
-      labels,
-      datasets: [
-        {
-          data: dados,
-          borderColor: "#7C3AED",
-          backgroundColor: "rgba(124,58,237,0.15)",
-          fill: true,
-          tension: 0.45,
-          pointRadius: 3,
-          pointHoverRadius: 6,
-          borderWidth: 2
-        },
-        ...(mediaDataset ? [mediaDataset] : [])
-      ]
+// =========================
+// CHART
+// =========================
+chart = new Chart(ctx, {
+  type: "line",
+
+  data: {
+    labels,
+    datasets: [
+      {
+        data: dados,
+        borderColor: "#7C3AED",
+        backgroundColor: "rgba(124,58,237,0.15)",
+        fill: true,
+        tension: 0.45,
+        pointRadius: 3,
+        pointHoverRadius: 6,
+        borderWidth: 2
+      },
+      ...(mediaDataset ? [mediaDataset] : [])
+    ]
+  },
+
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    aspectRatio: 2.4,
+
+    layout: {
+      padding: {
+        top: 10,
+        right: 10,
+        bottom: 5,
+        left: 5
+      }
     },
 
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
+    animation: {
+      duration: 800,
+      easing: "easeOutQuart"
+    },
 
-      animation: {
-        duration: 800,
-        easing: "easeOutQuart"
+    plugins: {
+      legend: {
+        display: false
       },
 
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          mode: "index",
-          intersect: false
+      tooltip: {
+        mode: "index",
+        intersect: false
+      }
+    },
+
+    interaction: {
+      mode: "index",
+      intersect: false
+    },
+
+    scales: {
+      x: {
+        grid: {
+          display: false
+        },
+
+        ticks: {
+          color: "#94A3B8",
+          maxRotation: 0,
+          minRotation: 0,
+          autoSkip: true,
+          maxTicksLimit: periodo === 365 ? 12 : 8
         }
       },
 
-      interaction: {
-        mode: "index",
-        intersect: false
-      },
+      y: {
+        beginAtZero: true,
 
-      scales: {
-        y: {
-          beginAtZero: true,
-          ticks: { precision: 0 }
+        ticks: {
+          color: "#94A3B8"
         },
-        x: {
-          grid: { display: false }
+
+        grid: {
+          color: "rgba(255,255,255,.06)"
         }
       }
     }
-  });
+  }
+});
 
   // animação entrada
   setTimeout(() => {

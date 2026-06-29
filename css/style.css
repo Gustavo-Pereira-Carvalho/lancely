@@ -1,0 +1,723 @@
+/* ==========================================
+   RESET
+========================================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Inter',sans-serif;
+}
+
+html{
+    height:100%;
+}
+
+:root{
+
+    --bg:#020617;
+    --bg-secondary:#0B1220;
+
+    --border:#1E293B;
+
+    --text:#F8FAFC;
+    --text-secondary:#94A3B8;
+
+    --primary:#7C3AED;
+    --primary-dark:#6D28D9;
+
+    --cyan:#06B6D4;
+
+    --danger:#EF4444;
+    --success:#22C55E;
+    --warning:#FACC15;
+
+}
+
+/* ==========================================
+   BODY
+========================================== */
+
+body{
+
+    min-height:100vh;
+
+    background:
+        radial-gradient(circle at top left,#0B0F1A,#020617 70%);
+
+    color:var(--text);
+
+    overflow:hidden;
+
+}
+
+/* ==========================================
+   ELEMENTOS GLOBAIS
+========================================== */
+
+a{
+
+    color:inherit;
+    text-decoration:none;
+
+}
+
+img{
+
+    display:block;
+    max-width:100%;
+
+}
+
+.hidden{
+
+    display:none !important;
+
+}
+
+/* ==========================================
+   LAYOUT
+========================================== */
+
+.container{
+
+    display:flex;
+    height:100vh;
+
+}
+
+.main{
+
+    flex:1;
+
+    display:flex;
+    flex-direction:column;
+
+    padding:20px;
+
+    overflow:hidden;
+
+}
+
+/* ==========================================
+   SIDEBAR
+========================================== */
+
+.sidebar{
+
+    width:230px;
+
+    background:rgba(2,6,23,.85);
+
+    backdrop-filter:blur(12px);
+
+    border-right:1px solid rgba(30,41,59,.6);
+
+    padding:18px;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+
+}
+
+/* ==========================================
+   LOGO
+========================================== */
+
+.logo-box{
+
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+    margin-bottom:20px;
+
+}
+
+.logo-box img{
+
+    width:38px;
+
+}
+
+.logo-box span{
+
+    font-size:20px;
+    font-weight:700;
+
+}
+
+/* ==========================================
+   MENU
+========================================== */
+
+.sidebar nav a{
+
+    display:block;
+
+    padding:10px;
+
+    margin-bottom:6px;
+
+    color:var(--text-secondary);
+
+    border-radius:10px;
+
+    transition:.2s;
+
+    font-size:13px;
+
+}
+
+.sidebar nav a:hover{
+
+    background:rgba(30,41,59,.7);
+
+    color:white;
+
+    transform:translateX(3px);
+
+}
+
+.sidebar .active{
+
+    background:linear-gradient(
+        135deg,
+        var(--primary),
+        var(--primary-dark)
+    );
+
+    color:white;
+
+}
+
+/* ==========================================
+   PLAN BOX
+========================================== */
+
+.plan-box{
+
+    border:1px solid rgba(30,41,59,.6);
+
+    border-radius:12px;
+
+    padding:14px;
+
+}
+
+.plan-box h4{
+
+    margin-bottom:6px;
+
+}
+
+.plan-box p{
+
+    color:var(--text-secondary);
+
+    font-size:12px;
+
+}
+
+.progress{
+
+    height:6px;
+
+    background:#1E293B;
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+    margin:10px 0;
+
+}
+
+.bar{
+
+    width:0%;
+
+    height:100%;
+
+    background:linear-gradient(
+        90deg,
+        var(--primary),
+        var(--cyan)
+    );
+
+}
+
+.plan-box button{
+
+    width:100%;
+
+    margin-top:6px;
+
+}
+
+/* ==========================================
+   TOPBAR
+========================================== */
+
+.topbar{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:18px;
+
+}
+
+.topbar h1{
+
+    font-size:22px;
+
+}
+
+.top-actions{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+}
+
+/* ==========================================
+   USER
+========================================== */
+
+.user-box{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    cursor:pointer;
+
+    position:relative;
+
+}
+
+.user-box img{
+
+    width:34px;
+
+    border-radius:50%;
+
+}
+
+/* ==========================================
+   USER MENU
+========================================== */
+
+.user-menu{
+
+    position:absolute;
+
+    right:0;
+
+    top:55px;
+
+    width:190px;
+
+    background:#0F172A;
+
+    border:1px solid var(--border);
+
+    border-radius:12px;
+
+    padding:12px;
+
+    display:none;
+
+    z-index:999;
+
+}
+
+.user-menu.active{
+
+    display:block;
+
+}
+
+.user-menu p{
+
+    font-size:13px;
+
+    font-weight:600;
+
+}
+
+.user-menu small{
+
+    color:var(--text-secondary);
+
+}
+
+.user-menu button{
+
+    width:100%;
+
+    margin-top:8px;
+
+}
+
+/* ==========================================
+   BOX
+========================================== */
+
+.box{
+
+    background:rgba(2,6,23,.85);
+
+    border:1px solid rgba(30,41,59,.6);
+
+    border-radius:12px;
+
+    padding:16px;
+
+    box-shadow:0 8px 20px rgba(0,0,0,.25);
+
+}
+
+.box-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:16px;
+
+}
+
+.box h3{
+
+    margin:0;
+
+    color:#E2E8F0;
+
+}
+
+/* ==========================================
+   FORM
+========================================== */
+
+.form-row{
+
+    display:flex;
+
+    gap:10px;
+
+    flex-wrap:wrap;
+
+}
+
+label{
+
+    font-size:13px;
+
+    color:var(--text-secondary);
+
+}
+
+input,
+select,
+textarea{
+
+    background:#020617;
+
+    color:white;
+
+    border:1px solid var(--border);
+
+    border-radius:8px;
+
+    padding:10px;
+
+    outline:none;
+
+    transition:.2s;
+
+    font-size:13px;
+
+}
+
+textarea{
+
+    resize:vertical;
+
+    min-height:90px;
+
+}
+
+input{
+
+    flex:1;
+
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+
+    border-color:var(--primary);
+
+    box-shadow:0 0 0 3px rgba(124,58,237,.15);
+
+}
+
+::placeholder{
+
+    color:var(--text-secondary);
+
+}
+
+/* ==========================================
+   SEARCH
+========================================== */
+
+.search{
+
+    width:220px;
+
+}
+
+/* ==========================================
+   BUTTONS
+========================================== */
+
+button{
+
+    border:none;
+
+    border-radius:8px;
+
+    padding:10px 14px;
+
+    cursor:pointer;
+
+    color:white;
+
+    font-size:12px;
+
+    transition:.2s;
+
+    background:linear-gradient(
+        135deg,
+        var(--primary),
+        var(--cyan)
+    );
+
+}
+
+button:hover{
+
+    transform:translateY(-2px);
+
+    opacity:.95;
+
+}
+
+button:active{
+
+    transform:scale(.98);
+
+}
+
+button:disabled{
+
+    opacity:.5;
+
+    cursor:not-allowed;
+
+    transform:none;
+
+}
+
+/* ==========================================
+   FILTROS
+========================================== */
+
+.filtros{
+
+    display:flex;
+
+    gap:10px;
+
+}
+
+.filtros button{
+
+    background:#0F172A;
+
+    border:1px solid var(--border);
+
+}
+
+.filtros button:hover{
+
+    border-color:var(--primary);
+
+}
+
+/* ==========================================
+   BADGES
+========================================== */
+
+.badge{
+
+    padding:5px 10px;
+
+    border-radius:20px;
+
+    font-size:11px;
+
+}
+
+.pago{
+
+    background:rgba(34,197,94,.2);
+
+    color:var(--success);
+
+}
+
+.pendente{
+
+    background:rgba(250,204,21,.15);
+
+    color:var(--warning);
+
+}
+
+/* ==========================================
+   LISTAS
+========================================== */
+
+ul{
+
+    list-style:none;
+
+}
+
+li{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:15px;
+
+    padding:12px;
+
+    margin-bottom:10px;
+
+    border-radius:10px;
+
+    background:rgba(15,23,42,.6);
+
+    border:1px solid rgba(30,41,59,.6);
+
+    transition:.2s;
+
+}
+
+li:hover{
+
+    transform:translateY(-2px);
+
+    border-color:var(--primary);
+
+    background:#0B1220;
+
+}
+
+/* ==========================================
+   UTILITÁRIOS
+========================================== */
+
+.flex{
+
+    display:flex;
+
+}
+
+.center{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+}
+
+.space-between{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+}
+
+.text-muted{
+
+    color:var(--text-secondary);
+
+}
+
+.mt-10{
+
+    margin-top:10px;
+
+}
+
+.mt-20{
+
+    margin-top:20px;
+
+}
+
+.mb-10{
+
+    margin-bottom:10px;
+
+}
+
+.mb-20{
+
+    margin-bottom:20px;
+
+}
+
+/* ==========================================
+   SCROLLBAR
+========================================== */
+
+::-webkit-scrollbar{
+
+    width:6px;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:var(--primary);
+
+    border-radius:20px;
+
+}
