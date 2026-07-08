@@ -1,227 +1,272 @@
-/* RESET */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Inter", sans-serif;
+/* ==========================================
+   CLIENTES PAGE
+========================================== */
+
+.main{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    min-height:0;
 }
 
-/* BODY */
-body {
-  height: 100vh;
-  background: radial-gradient(circle at top left, #0b0f1a, #020617 60%);
-  color: #f8fafc;
+/* ==========================================
+   TOPBAR
+========================================== */
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:16px;
+    margin-bottom:20px;
+    flex-shrink:0;
 }
 
-/* LAYOUT */
-.container {
-  display: flex;
-  height: 100vh;
+.topbar h1{
+    font-size:24px;
+    margin-bottom:4px;
 }
 
-/* SIDEBAR */
-.sidebar {
-  width: 220px;
-  background: rgba(2, 6, 23, 0.85);
-  backdrop-filter: blur(10px);
-  padding: 18px;
-  border-right: 1px solid #1e293b;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+.topbar p{
+    color:var(--text-secondary);
+    font-size:13px;
 }
 
-/* LOGO */
-.logo-box {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 20px;
+.top-actions{
+    display:flex;
+    align-items:center;
+    gap:10px;
 }
 
-.logo-box img {
-  width: 38px;
+/* ==========================================
+   FORM
+========================================== */
+
+.form-row{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
 }
 
-/* NAV */
-.sidebar nav a {
-  display: block;
-  padding: 10px;
-  margin-bottom: 6px;
-  color: #94a3b8;
-  text-decoration: none;
-  border-radius: 8px;
-  font-size: 13px;
-  transition: .2s;
+.form-row input{
+    flex:1;
+    min-width:220px;
 }
 
-.sidebar nav a:hover {
-  background: #1e293b;
-  color: white;
-  transform: translateX(2px);
+/* ==========================================
+   BOX DA LISTA
+========================================== */
+
+.lista-box{
+    flex:1;
+    min-height:0;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+    margin-bottom:0;
 }
 
-.sidebar .active {
-  background: linear-gradient(135deg, #7c3aed, #6d28d9);
-  color: white;
+.box-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    margin-bottom:14px;
+    flex-shrink:0;
 }
 
-/* MAIN */
-.main {
-  flex: 1;
-  padding: 24px;
+.box-header h3{
+    margin-bottom:0;
 }
 
-/* TOPBAR */
-.topbar {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 24px;
+.contador{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:6px 10px;
+    border-radius:999px;
+    background:rgba(124,58,237,.12);
+    border:1px solid rgba(124,58,237,.25);
+    color:#C4B5FD;
+    font-size:12px;
+    font-weight:600;
 }
 
-.topbar h1 {
-  font-size: 20px;
-  font-weight: 600;
+/* ==========================================
+   LISTA
+========================================== */
+
+#listaClientes{
+    flex:1;
+    min-height:0;
+    overflow-y:auto;
+    padding-right:4px;
 }
 
-/* SEARCH */
-.search {
-  padding: 8px 14px;
-  border-radius: 20px;
-  border: 1px solid #1e293b;
-  background: #020617;
-  color: white;
-  outline: none;
-  font-size: 12px;
+#listaClientes li{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:14px;
+
+    padding:14px 16px;
+    margin-bottom:12px;
+
+    border-radius:12px;
+    border:1px solid rgba(30,41,59,.7);
+
+    background:rgba(15,23,42,.55);
+
+    transition:.2s;
 }
 
-.search:focus {
-  border-color: #7c3aed;
+#listaClientes li:last-child{
+    margin-bottom:0;
 }
 
-/* BOX */
-.box {
-  background: #020617;
-  border: 1px solid #1e293b;
-  border-radius: 12px;
-  padding: 16px;
-  margin-bottom: 15px;
-
-  box-shadow: 0 8px 20px rgba(0,0,0,.25);
+#listaClientes li:hover{
+    transform:translateY(-2px);
+    border-color:rgba(124,58,237,.8);
+    background:#0B1220;
+    box-shadow:0 10px 24px rgba(0,0,0,.22);
 }
 
-.box h3 {
-  margin-bottom: 12px;
-  font-size: 14px;
+/* ==========================================
+   INFO DO CLIENTE
+========================================== */
+
+.cliente-info{
+    min-width:0;
+    display:flex;
+    flex-direction:column;
+    gap:4px;
 }
 
-/* FORM */
-.form-row {
-  display: flex;
-  gap: 10px;
+.cliente-info strong{
+    font-size:15px;
+    color:var(--text);
+    word-break:break-word;
 }
 
-.form-row input {
-  flex: 1;
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #1e293b;
-  background: #020617;
-  color: white;
-  outline: none;
+.cliente-info small{
+    color:var(--text-secondary);
+    font-size:12px;
 }
 
-.form-row input:focus {
-  border-color: #7c3aed;
+/* ==========================================
+   AÇÕES
+========================================== */
+
+.acoes{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    flex-shrink:0;
 }
 
-/* BOTÃO PRINCIPAL */
-.form-row button {
-  background: linear-gradient(135deg, #7c3aed, #06b6d4);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 10px 18px;
-  cursor: pointer;
-  transition: .2s;
-}
-
-.form-row button:hover {
-  transform: translateY(-2px);
-}
-
-/* LISTA */
-ul {
-  list-style: none;
-}
-
-li {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  padding: 14px;
-  margin-bottom: 10px;
-
-  border-radius: 10px;
-  border: 1px solid #1e293b;
-
-  background: #020617;
-
-  transition: .2s;
-}
-
-li:hover {
-  border-color: #7c3aed;
-  transform: translateY(-2px);
-  background: #0b1220;
-}
-
-/* AÇÕES */
-.acoes {
-  display: flex;
-  gap: 8px;
-}
-
-/* BOTÕES */
 .btn-editar,
-.btn-remove {
-  width: 36px;
-  height: 36px;
+.btn-remove{
+    width:38px;
+    height:38px;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    display:flex;
+    align-items:center;
+    justify-content:center;
 
-  border: none;
-  border-radius: 8px;
+    border:none;
+    border-radius:10px;
 
-  cursor: pointer;
+    cursor:pointer;
 
-  font-size: 15px;
-
-  transition: .2s;
+    font-size:15px;
+    transition:.2s;
 }
 
 /* EDITAR */
-.btn-editar {
-  background: rgba(59,130,246,.15);
-  color: #60a5fa;
+.btn-editar{
+    background:rgba(59,130,246,.15);
+    color:#60A5FA;
 }
 
-.btn-editar:hover {
-  background: rgba(59,130,246,.3);
-  transform: scale(1.08);
+.btn-editar:hover{
+    background:rgba(59,130,246,.28);
+    transform:scale(1.06);
 }
 
-/* EXCLUIR */
-.btn-remove {
-  background: rgba(239,68,68,.15);
-  color: #f87171;
+/* REMOVER */
+.btn-remove{
+    background:rgba(239,68,68,.15);
+    color:#F87171;
 }
 
-.btn-remove:hover {
-  background: rgba(239,68,68,.3);
-  transform: scale(1.08);
+.btn-remove:hover{
+    background:rgba(239,68,68,.28);
+    transform:scale(1.06);
+}
+
+/* ==========================================
+   ESTADO VAZIO
+========================================== */
+
+.lista-vazia{
+    min-height:220px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+
+    padding:24px;
+    border:1px dashed rgba(148,163,184,.22);
+    border-radius:14px;
+
+    color:var(--text-secondary);
+    background:rgba(15,23,42,.35);
+    font-size:14px;
+}
+
+/* ==========================================
+   RESPONSIVO
+========================================== */
+
+@media (max-width:900px){
+
+    .topbar{
+        flex-direction:column;
+        align-items:stretch;
+    }
+
+    .top-actions{
+        width:100%;
+    }
+
+    .search{
+        width:100%;
+    }
+
+    .box-header{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+}
+
+@media (max-width:640px){
+
+    .form-row{
+        flex-direction:column;
+    }
+
+    .form-row input,
+    .form-row button{
+        width:100%;
+    }
+
+    #listaClientes li{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .acoes{
+        width:100%;
+        justify-content:flex-end;
+    }
 }

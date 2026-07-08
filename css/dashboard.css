@@ -1,23 +1,16 @@
-
-
 /* ==========================================
-   DASHBOARD
+   DASHBOARD LAYOUT
 ========================================== */
 
-/* GRID */
+.main{
+    min-width:0;
+}
 
-.grid{
-    flex:1;
-
-    display:grid;
-
-    grid-template-columns:2fr 1fr;
-    grid-template-rows:360px 1fr;
-
-    gap:12px;
-
+.dashboard-page .main,
+.main{
+    display:flex;
+    flex-direction:column;
     min-height:0;
-    height:100%;
 }
 
 /* ==========================================
@@ -25,218 +18,533 @@
 ========================================== */
 
 .cards{
-
     display:grid;
-
-    grid-template-columns:repeat(4,1fr);
-
-    gap:12px;
-
-    margin-bottom:12px;
-
+    grid-template-columns:repeat(4, minmax(0, 1fr));
+    gap:16px;
+    margin-bottom:16px;
     flex-shrink:0;
-
 }
 
 .card{
-    background:rgba(2,6,23,.9);
-
-    border:1px solid rgba(30,41,59,.6);
-
-    border-radius:18px;
-
-    padding:20px;
-
+    min-width:0;
     display:flex;
     align-items:center;
+    gap:14px;
 
-    gap:16px;
+    padding:18px;
+    border-radius:16px;
 
-    transition:.2s;
+    background:rgba(2, 6, 23, .86);
+    border:1px solid rgba(30, 41, 59, .7);
+    box-shadow:0 12px 30px rgba(0,0,0,.22);
+
+    transition:.22s ease;
 }
 
 .card:hover{
     transform:translateY(-3px);
-    border-color:#8B5CF6;
-}
-
-.card-info span{
-    color:var(--text-secondary);
-    font-size:13px;
-}
-
-.card-info h2{
-    color:#fff;
-    font-size:30px;
-    font-weight:700;
-    margin-top:4px;
+    border-color:rgba(124,58,237,.45);
+    box-shadow:0 16px 36px rgba(0,0,0,.28);
 }
 
 .card-img{
-    height:56px;
+    width:52px;
+    height:52px;
     object-fit:contain;
     flex-shrink:0;
 }
 
-/* ==========================================
-   BOXES
-========================================== */
-
-.box{
-    background:rgba(2,6,23,.9);
-    border:1px solid rgba(30,41,59,.6);
-    border-radius:18px;
-    padding:20px;
-
-    display:flex;
-    flex-direction:column;
-
-    min-height:0;
-    overflow:hidden;
-}
-
-.box h3{
-    color:#fff;
-    font-size:20px;
-    font-weight:600;
-    margin-bottom:18px;
-}
-
-/* ==========================================
-   LISTAS
-========================================== */
-
-.grid ul{
-    flex:1;
-    overflow-y:auto;
-    min-height:0;
-
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-
-    padding:0;
-    margin:0;
-
-    list-style:none;
-}
-
-.grid li{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-
-    padding:14px 16px;
-
-    background:rgba(255,255,255,.02);
-
-    border:1px solid rgba(255,255,255,.05);
-
-    border-radius:14px;
-
-    transition:.2s;
-}
-
-.grid li:hover{
-    background:rgba(255,255,255,.04);
-    border-color:rgba(139,92,246,.35);
-    transform:translateY(-2px);
-}
-
-/* ==========================================
-   PROJETOS
-========================================== */
-
-.projeto-info{
+.card-info{
+    min-width:0;
     display:flex;
     flex-direction:column;
     gap:4px;
 }
 
-.projeto-nome{
-    color:#fff;
-    font-size:14px;
-    font-weight:600;
-}
-
-.projeto-sub{
+.card-info span{
     color:var(--text-secondary);
-    font-size:13px;
-}
-
-.status-badge{
-    padding:6px 12px;
-    border-radius:999px;
-
     font-size:12px;
-    font-weight:600;
+    font-weight:500;
+    line-height:1.2;
+}
 
+.card-info h2{
+    font-size:24px;
+    line-height:1.1;
+    color:var(--text);
+    font-weight:700;
     white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
 }
 
-.status-pago{
-    background:rgba(34,197,94,.12);
-    color:#22C55E;
+.card-info small{
+    color:var(--text-secondary);
+    font-size:11px;
+    line-height:1.35;
 }
 
-.status-pendente{
-    background:rgba(249,115,22,.12);
-    color:#FB923C;
+#pendentesLabel{
+    display:block;
+    margin-top:2px;
 }
 
 /* ==========================================
-   GRÁFICO
+   GRID PRINCIPAL
+========================================== */
+
+.grid{
+    flex:1;
+    min-height:0;
+
+    display:grid;
+    grid-template-columns:minmax(0, 2fr) minmax(320px, 1fr);
+    grid-template-rows:minmax(360px, 1.2fr) minmax(250px, 1fr);
+    gap:16px;
+}
+
+/* ==========================================
+   BOX BASE DO DASHBOARD
+========================================== */
+
+.grid .box{
+    min-width:0;
+    min-height:0;
+    margin-bottom:0;
+
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+}
+
+.box-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+
+    margin-bottom:14px;
+    flex-shrink:0;
+}
+
+.box-header h3{
+    margin-bottom:0;
+}
+
+/* ==========================================
+   BOX DO GRÁFICO
 ========================================== */
 
 .box-grafico{
+    grid-column:1 / 2;
+    grid-row:1 / 2;
+
     display:flex;
     flex-direction:column;
+    min-height:0;
 }
 
 .grafico-header{
     display:flex;
+    align-items:flex-start;
     justify-content:space-between;
-    align-items:center;
+    gap:16px;
+
     margin-bottom:14px;
+    padding-bottom:14px;
+    border-bottom:1px solid rgba(255,255,255,.06);
+
+    flex-shrink:0;
+}
+
+.grafico-title{
+    min-width:0;
+}
+
+.grafico-title h3{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-bottom:6px;
+}
+
+.grafico-subtitle{
+    color:var(--text-secondary);
+    font-size:12px;
+    line-height:1.4;
+}
+
+.badge-pro{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:4px 8px;
+    border-radius:999px;
+
+    font-size:10px;
+    font-weight:700;
+    letter-spacing:.4px;
+    line-height:1;
+
+    background:linear-gradient(135deg, var(--primary), var(--cyan));
+    color:#fff;
+    box-shadow:0 8px 18px rgba(124,58,237,.22);
+}
+
+.grafico-wrap{
+    position:relative;
+    flex:1;
+    min-height:0;
+    width:100%;
 }
 
 #grafico{
     width:100% !important;
+    height:100% !important;
+    display:block;
+}
+
+/* ==========================================
+   FILTROS DO GRÁFICO
+========================================== */
+
+#grafico + *{
+    min-width:0;
+}
+
+#grafico{
+    min-width:0;
+}
+
+#filtros{
+    display:flex;
+    gap:8px;
+    margin-bottom:0;
+    flex-shrink:0;
+}
+
+#filtros button{
+    min-width:52px;
+    padding:8px 12px;
+    border-radius:10px;
+
+    background:#0F172A;
+    border:1px solid rgba(30,41,59,.9);
+    color:#CBD5E1;
+
+    font-size:12px;
+    font-weight:600;
+
+    box-shadow:none;
+    transform:none;
+}
+
+#filtros button:hover{
+    border-color:rgba(124,58,237,.55);
+    color:#fff;
+    background:rgba(124,58,237,.12);
+    transform:translateY(-1px);
+}
+
+#filtros button.active{
+    background:linear-gradient(135deg, var(--primary), var(--cyan));
+    border-color:transparent;
+    color:#fff;
+    box-shadow:0 10px 22px rgba(124,58,237,.28);
+}
+
+/* ==========================================
+   POSIÇÃO DOS BOXES
+========================================== */
+
+.grid > .box:nth-child(2){
+    grid-column:2 / 3;
+    grid-row:1 / 2;
+}
+
+.grid > .box:nth-child(3){
+    grid-column:1 / 2;
+    grid-row:2 / 3;
+}
+
+.grid > .box:nth-child(4){
+    grid-column:2 / 3;
+    grid-row:2 / 3;
+}
+
+/* ==========================================
+   LISTAS DO DASHBOARD
+========================================== */
+
+.lista-dashboard{
+    list-style:none;
     flex:1;
     min-height:0;
+    overflow-y:auto;
+    padding-right:4px;
+}
+
+.lista-dashboard li{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+
+    padding:14px;
+    margin-bottom:10px;
+    border-radius:12px;
+
+    background:rgba(15,23,42,.62);
+    border:1px solid rgba(30,41,59,.72);
+
+    transition:.2s ease;
+}
+
+.lista-dashboard li:last-child{
+    margin-bottom:0;
+}
+
+.lista-dashboard li:hover{
+    transform:translateY(-2px);
+    border-color:rgba(124,58,237,.45);
+    background:#0B1220;
+}
+
+.dash-item-info{
+    min-width:0;
+    display:flex;
+    flex-direction:column;
+    gap:5px;
+}
+
+.dash-item-info strong{
+    font-size:14px;
+    font-weight:600;
+    color:var(--text);
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.dash-item-info small{
+    color:var(--text-secondary);
+    font-size:12px;
+    line-height:1.35;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+/* ==========================================
+   STATUS INLINE / BADGES
+========================================== */
+
+.status-inline{
+    flex-shrink:0;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:6px 10px;
+    border-radius:999px;
+
+    font-size:11px;
+    font-weight:700;
+    line-height:1;
+    white-space:nowrap;
+}
+
+.status-pago{
+    background:rgba(34,197,94,.15);
+    color:#4ADE80;
+}
+
+.status-pendente{
+    background:rgba(250,204,21,.12);
+    color:#FACC15;
+}
+
+.status-atrasado{
+    background:rgba(239,68,68,.15);
+    color:#F87171;
+}
+
+.status-hoje{
+    background:rgba(249,115,22,.16);
+    color:#FB923C;
+}
+
+.status-alerta{
+    background:rgba(250,204,21,.12);
+    color:#FACC15;
+}
+
+.status-ok{
+    background:rgba(6,182,212,.14);
+    color:#67E8F9;
+}
+
+/* ==========================================
+   EMPTY STATE
+========================================== */
+
+.empty-state{
+    align-items:flex-start !important;
+    justify-content:flex-start !important;
+}
+
+.empty-text{
+    display:flex;
+    flex-direction:column;
+    gap:5px;
+}
+
+.empty-text strong{
+    font-size:14px;
+    color:var(--text);
+}
+
+.empty-text small{
+    color:var(--text-secondary);
+    font-size:12px;
+    line-height:1.4;
+}
+
+/* ==========================================
+   AJUSTES VISUAIS DO TOPO
+========================================== */
+
+.topbar{
+    margin-bottom:18px;
+}
+
+.topbar > div:first-child p{
+    color:var(--text-secondary);
+    font-size:13px;
+    margin-top:4px;
+}
+
+.user-meta{
+    display:flex;
+    flex-direction:column;
+    min-width:0;
+}
+
+.user-meta strong{
+    font-size:13px;
+    color:var(--text);
+}
+
+.user-meta span{
+    font-size:12px;
+    color:var(--text-secondary);
+}
+
+/* ==========================================
+   SCROLL DAS LISTAS DO DASHBOARD
+========================================== */
+
+.lista-dashboard::-webkit-scrollbar{
+    width:6px;
+}
+
+.lista-dashboard::-webkit-scrollbar-track{
+    background:transparent;
+}
+
+.lista-dashboard::-webkit-scrollbar-thumb{
+    background:rgba(124,58,237,.65);
+    border-radius:999px;
 }
 
 /* ==========================================
    RESPONSIVO
 ========================================== */
 
-@media(max-width:1200px){
+@media (max-width: 1250px){
 
-.cards{
+    .cards{
+        grid-template-columns:repeat(2, minmax(0, 1fr));
+    }
 
-grid-template-columns:repeat(2,1fr);
+    .grid{
+        grid-template-columns:minmax(0, 1fr);
+        grid-template-rows:minmax(340px, auto) auto auto auto;
+    }
 
+    .box-grafico{
+        grid-column:auto;
+        grid-row:auto;
+    }
+
+    .grid > .box:nth-child(2),
+    .grid > .box:nth-child(3),
+    .grid > .box:nth-child(4){
+        grid-column:auto;
+        grid-row:auto;
+    }
 }
 
+@media (max-width: 900px){
+
+    .main{
+        padding:16px;
+    }
+
+    .topbar{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:14px;
+    }
+
+    .top-actions{
+        width:100%;
+        justify-content:space-between;
+        flex-wrap:wrap;
+    }
+
+    .search{
+        width:100%;
+        max-width:none;
+    }
+
+    .grafico-header{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    #filtros{
+        width:100%;
+        flex-wrap:wrap;
+    }
+
+    .lista-dashboard li{
+        align-items:flex-start;
+        flex-direction:column;
+    }
+
+    .status-inline{
+        align-self:flex-start;
+    }
 }
 
-@media(max-width:900px){
+@media (max-width: 700px){
 
-.grid{
+    .cards{
+        grid-template-columns:1fr;
+    }
 
-grid-template-columns:1fr;
-grid-template-rows:auto;
+    .card{
+        padding:16px;
+    }
 
-}
+    .card-img{
+        width:46px;
+        height:46px;
+    }
 
-}
-
-@media(max-width:700px){
-
-.cards{
-
-grid-template-columns:1fr;
-
-}
-
+    .card-info h2{
+        font-size:22px;
+    }
 }

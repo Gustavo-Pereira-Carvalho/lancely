@@ -1,143 +1,177 @@
 /* ==========================================
    PROJETOS
+   (usa o style.css como base global)
 ========================================== */
 
-/* ===========================
-   NOVO PROJETO
-=========================== */
+/* ==========================================
+   MAIN / ESTRUTURA DA PÁGINA
+========================================== */
 
-.box:first-of-type{
-
-    background:linear-gradient(
-        180deg,
-        rgba(124,58,237,.08),
-        rgba(2,6,23,.92)
-    );
-
-    border:1px solid rgba(124,58,237,.20);
-
+.main{
+    overflow:hidden;
 }
 
-.box:first-of-type h3{
+/* faz a página ocupar a altura certa e
+   permite que a lista use scroll sem estourar */
+.main > .box:last-of-type{
+    flex:1;
+    min-height:0;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+}
 
+/* ==========================================
+   CARD "NOVO PROJETO"
+========================================== */
+
+.main > .box:first-of-type{
+    background:
+        linear-gradient(
+            180deg,
+            rgba(124,58,237,.08),
+            rgba(2,6,23,.92)
+        );
+
+    border:1px solid rgba(124,58,237,.22);
+}
+
+.main > .box:first-of-type h3{
     display:flex;
     align-items:center;
     gap:8px;
 
     font-size:18px;
+    font-weight:700;
 
     margin-bottom:18px;
-
 }
 
-.box:first-of-type h3::before{
-
+.main > .box:first-of-type h3::before{
     content:"🚀";
-
 }
 
-/* ===========================
-   FORM
-=========================== */
+/* ==========================================
+   FORMULÁRIO
+========================================== */
 
 .form-row{
-
     display:flex;
-
     gap:12px;
-
     align-items:center;
-
+    flex-wrap:wrap;
 }
 
 .form-row input,
 .form-row select{
-
+    flex:1;
     min-width:170px;
-
 }
 
 .form-row button{
-
     min-width:150px;
-
+    flex-shrink:0;
 }
 
-/* ===========================
+/* campo de valor um pouco menor visualmente */
+#projetoValor{
+    max-width:160px;
+}
+
+/* select cliente um pouco maior */
+#clienteSelect{
+    min-width:220px;
+}
+
+/* prazo */
+#projetoPrazo{
+    max-width:180px;
+}
+
+/* ==========================================
    FILTROS
-=========================== */
+========================================== */
 
 .filtros{
-
-    margin:22px 0;
-
+    display:flex;
+    gap:12px;
+    margin:18px 0 16px;
+    flex-wrap:wrap;
 }
 
 .filtros button{
-
-    min-width:120px;
-
+    min-width:115px;
     font-weight:600;
-
-    letter-spacing:.3px;
-
+    letter-spacing:.2px;
 }
 
 .filtros button.active{
-
     background:linear-gradient(
         135deg,
         var(--primary),
         var(--primary-dark)
     );
 
-    color:white;
-
+    color:#fff;
     border-color:var(--primary);
-
-    box-shadow:0 8px 18px rgba(124,58,237,.25);
-
+    box-shadow:0 8px 18px rgba(124,58,237,.22);
 }
 
-/* ===========================
-   LISTA
-=========================== */
+/* ==========================================
+   BOX DA LISTA
+========================================== */
+
+.main > .box:last-of-type{
+    background:rgba(2,6,23,.85);
+}
+
+/* ==========================================
+   LISTA DE PROJETOS
+========================================== */
 
 #listaProjetos{
-
     flex:1;
-
-    display:flex;
-
-    flex-direction:column;
-
-    gap:14px;
-
-    overflow-y:auto;
-
-    overflow-x:hidden;
-
     min-height:0;
 
-    padding-right:8px;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
 
+    overflow-y:auto;
+    overflow-x:hidden;
+
+    padding-right:8px;
+    margin:0;
 }
 
-/* CARD */
+/* scrollbar própria da lista */
+#listaProjetos::-webkit-scrollbar{
+    width:8px;
+}
+
+#listaProjetos::-webkit-scrollbar-thumb{
+    background:var(--primary);
+    border-radius:999px;
+}
+
+#listaProjetos::-webkit-scrollbar-track{
+    background:transparent;
+}
+
+/* ==========================================
+   CARD DE PROJETO
+========================================== */
 
 #listaProjetos li{
-
     display:flex;
-
     justify-content:space-between;
-
     align-items:center;
-
     gap:14px;
 
     padding:14px 16px;
+    margin-bottom:0;
 
-    border-radius:14px;
+    border-radius:12px;
 
     background:
         linear-gradient(
@@ -146,335 +180,333 @@
             rgba(2,6,23,.95)
         );
 
-    border:1px solid rgba(30,41,59,.7);
+    border:1px solid rgba(30,41,59,.72);
 
-    transition:.25s;
+    transition:
+        transform .22s ease,
+        border-color .22s ease,
+        box-shadow .22s ease,
+        background .22s ease;
 
-    animation:fade .25s ease;
-
+    animation:fadeProjeto .25s ease;
 }
 
 #listaProjetos li:hover{
-
     transform:translateY(-3px);
-
     border-color:var(--primary);
-
-    box-shadow:
-        0 12px 28px rgba(124,58,237,.18);
-
+    box-shadow:0 12px 28px rgba(124,58,237,.16);
 }
 
-/* ===========================
-   INFO
-=========================== */
+/* ==========================================
+   INFORMAÇÕES DO PROJETO
+========================================== */
 
 .projeto-info{
-
     flex:1;
+    min-width:0;
 
     display:flex;
-
     flex-direction:column;
-
     gap:8px;
-
 }
 
 .projeto-info strong{
-
-    font-size:17px;
-
+    font-size:16px;
     font-weight:700;
+    letter-spacing:.2px;
+    color:var(--text);
 
-    letter-spacing:.3px;
-
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
 }
 
 .projeto-info small{
-
     display:flex;
-
     flex-wrap:wrap;
-
-    gap:14px;
+    gap:12px;
 
     color:var(--text-secondary);
-
     font-size:12px;
-
+    line-height:1.5;
 }
 
-/* ===========================
-   VALOR
-=========================== */
+/* caso você queira destacar partes do small
+   com spans no JS depois */
+.projeto-info small span{
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+}
 
+/* ==========================================
+   BLOCO DIREITO (valor + status + ações)
+========================================== */
+
+.projeto-extra{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    flex-shrink:0;
+}
+
+/* valor */
 .valor{
-
-    font-size:18px;
-
+    font-size:17px;
     font-weight:700;
-
     color:#4ADE80;
-
+    white-space:nowrap;
 }
 
-/* ===========================
+/* ==========================================
    STATUS
-=========================== */
+========================================== */
 
 .status-pago,
 .status-pendente{
-
     display:inline-flex;
-
     align-items:center;
-
     justify-content:center;
 
     width:max-content;
 
     padding:5px 12px;
-
-    margin-top:6px;
-
     border-radius:999px;
 
     font-size:11px;
-
     font-weight:700;
-
+    white-space:nowrap;
 }
 
 .status-pago{
-
-    background:rgba(34,197,94,.18);
-
+    background:rgba(34,197,94,.16);
     color:#4ADE80;
-
 }
 
 .status-pendente{
-
     background:rgba(250,204,21,.15);
-
     color:#FACC15;
-
 }
 
-/* ===========================
+/* ==========================================
    AÇÕES
-=========================== */
+========================================== */
 
 .acoes{
-
     display:flex;
-
     align-items:center;
-
-    gap:10px;
-
+    gap:8px;
+    flex-shrink:0;
 }
 
-/* ===========================
-   BOTÕES
-=========================== */
+/* ==========================================
+   BOTÕES DE AÇÃO
+========================================== */
 
 .btn-pago,
 .btn-editar,
 .btn-remove{
-
-    width:42px;
-
-    height:42px;
+    width:40px;
+    height:40px;
 
     display:flex;
-
     align-items:center;
-
     justify-content:center;
 
     border:none;
-
     border-radius:12px;
 
     cursor:pointer;
+    transition:.22s ease;
 
-    transition:.25s;
-
-    font-size:16px;
-
+    font-size:15px;
+    flex-shrink:0;
 }
 
-/* Pago */
-
+/* pago */
 .btn-pago{
-
     background:rgba(34,197,94,.15);
-
     color:#4ADE80;
-
 }
 
 .btn-pago:hover{
-
-    background:rgba(34,197,94,.30);
-
-    transform:translateY(-2px) scale(1.05);
-
+    background:rgba(34,197,94,.28);
+    transform:translateY(-2px) scale(1.04);
 }
 
-/* Editar */
-
+/* editar */
 .btn-editar{
-
     background:rgba(59,130,246,.15);
-
     color:#60A5FA;
-
 }
 
 .btn-editar:hover{
-
-    background:rgba(59,130,246,.30);
-
-    transform:translateY(-2px) scale(1.05);
-
+    background:rgba(59,130,246,.28);
+    transform:translateY(-2px) scale(1.04);
 }
 
-/* Remover */
-
+/* remover */
 .btn-remove{
-
     background:rgba(239,68,68,.15);
-
     color:#F87171;
-
 }
 
 .btn-remove:hover{
-
-    background:rgba(239,68,68,.30);
-
-    transform:translateY(-2px) scale(1.05);
-
-}
-
-/* ===========================
-   ANIMAÇÃO
-=========================== */
-
-@keyframes fade{
-
-    from{
-
-        opacity:0;
-
-        transform:translateY(12px);
-
-    }
-
-    to{
-
-        opacity:1;
-
-        transform:translateY(0);
-
-    }
-
+    background:rgba(239,68,68,.28);
+    transform:translateY(-2px) scale(1.04);
 }
 
 /* ==========================================
-   LISTA COM SCROLL
+   ESTADO VAZIO (caso queira usar depois)
 ========================================== */
 
-.main{
-    overflow:hidden;
-}
-
-.box:last-child{
-
+.lista-vazia{
     flex:1;
+    min-height:220px;
 
     display:flex;
+    align-items:center;
+    justify-content:center;
     flex-direction:column;
+    gap:10px;
 
-    min-height:0;
+    border:1px dashed rgba(148,163,184,.22);
+    border-radius:14px;
 
-    overflow:hidden;
-
+    color:var(--text-secondary);
+    text-align:center;
+    padding:24px;
 }
 
-#listaProjetos{
-
-    flex:1;
-
-    overflow-y:auto;
-
-    overflow-x:hidden;
-
-    padding-right:8px;
-
-    min-height:0;
-
-}
-listaProjetos
-/* Scroll */
-
-#listaProjetos::-webkit-scrollbar{
-
-    width:8px;
-
+.lista-vazia strong{
+    color:var(--text);
+    font-size:15px;
 }
 
-#listaProjetos::-webkit-scrollbar-thumb{
+/* ==========================================
+   ANIMAÇÃO
+========================================== */
 
-    background:var(--primary);
+@keyframes fadeProjeto{
+    from{
+        opacity:0;
+        transform:translateY(10px);
+    }
 
-    border-radius:999px;
-
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
 }
 
-#listaProjetos::-webkit-scrollbar-track{
-
-    background:transparent;
-
-}
-
-/* ===========================
+/* ==========================================
    RESPONSIVO
-=========================== */
+========================================== */
+
+@media (max-width:1100px){
+
+    .form-row input,
+    .form-row select{
+        min-width:150px;
+    }
+
+    #clienteSelect{
+        min-width:180px;
+    }
+}
 
 @media (max-width:900px){
 
+    .main{
+        overflow:auto;
+    }
+
+    .main > .box:last-of-type{
+        min-height:420px;
+    }
+
     .form-row{
-
         flex-direction:column;
-
+        align-items:stretch;
     }
 
     .form-row input,
     .form-row select,
-    .form-row button{
-
+    .form-row button,
+    #projetoValor,
+    #clienteSelect,
+    #projetoPrazo{
         width:100%;
+        max-width:none;
+    }
 
+    .filtros{
+        gap:10px;
+    }
+
+    .filtros button{
+        flex:1;
+        min-width:unset;
     }
 
     #listaProjetos li{
-
         flex-direction:column;
-
         align-items:flex-start;
+        gap:14px;
+    }
 
+    .projeto-info{
+        width:100%;
+    }
+
+    .projeto-info strong{
+        white-space:normal;
+    }
+
+    .projeto-extra{
+        width:100%;
+        justify-content:space-between;
+        flex-wrap:wrap;
+        gap:12px;
     }
 
     .acoes{
+        margin-left:auto;
+    }
+}
 
-        width:100%;
+@media (max-width:640px){
 
-        justify-content:flex-end;
-
+    .topbar{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:12px;
     }
 
+    .top-actions{
+        width:100%;
+    }
+
+    .search{
+        width:100%;
+    }
+
+    .filtros{
+        flex-direction:column;
+    }
+
+    .filtros button{
+        width:100%;
+    }
+
+    .projeto-extra{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .acoes{
+        width:100%;
+        justify-content:flex-end;
+        margin-left:0;
+    }
 }

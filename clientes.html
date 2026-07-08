@@ -2,58 +2,82 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8" />
-  <title>Clientes</title>
-  <link rel="stylesheet" href="css/style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clientes | Lancely</title>
+
+  <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/clientes.css" />
 </head>
 <body>
 
-<div class="container">
+  <div class="container">
 
-  <aside class="sidebar">
-    <div>
-      <div class="logo-box">
-        <img src="assets/logo.png" />
-        <span>Lancely</span>
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div>
+        <div class="logo-box">
+          <img src="assets/logo.png" alt="Logo Lancely" />
+          <span>Lancely</span>
+        </div>
+
+        <nav>
+          <a href="dashboard.html">Dashboard</a>
+          <a href="clientes.html" class="active">Clientes</a>
+          <a href="projetos.html">Projetos</a>
+        </nav>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+
+      <!-- TOPBAR -->
+      <div class="topbar">
+        <div>
+          <h1>Clientes</h1>
+          <p>Gerencie seus clientes cadastrados.</p>
+        </div>
+
+        <div class="top-actions">
+          <input
+            type="text"
+            id="buscarCliente"
+            class="search"
+            placeholder="Buscar cliente..."
+          />
+        </div>
       </div>
 
-      <nav>
-        <a href="dashboard.html">Dashboard</a>
-        <a href="clientes.html" class="active">Clientes</a>
-        <a href="projetos.html">Projetos</a>
-      </nav>
-    </div>
-  </aside>
+      <!-- FORM -->
+      <div class="box">
+        <h3>Novo Cliente</h3>
 
-  <main class="main">
+        <div class="form-row">
+          <input
+            type="text"
+            id="clienteInput"
+            placeholder="Nome do cliente"
+          />
 
-    <div class="topbar">
-      <h1>Clientes</h1>
-
-      <div class="top-actions">
-        <input placeholder="Buscar..." class="search">
+          <button id="btnAddCliente">
+            Adicionar
+          </button>
+        </div>
       </div>
-    </div>
 
-    <!-- BOX -->
-    <div class="box">
-      <h3>Novo Cliente</h3>
+      <!-- LISTA -->
+      <div class="box lista-box">
+        <div class="box-header">
+          <h3>Lista de clientes</h3>
+          <span class="contador" id="contadorClientes">0 clientes</span>
+        </div>
 
-      <div class="form-row">
-        <input type="text" id="clienteInput" placeholder="Nome do cliente" />
-        <button id="btnAddCliente">Adicionar</button>
+        <ul id="listaClientes"></ul>
       </div>
-    </div>
 
-    <!-- LISTA -->
-    <div class="box">
-      <ul id="listaClientes"></ul>
-    </div>
+    </main>
+  </div>
 
-  </main>
-
-</div>
-
-<script type="module" src="js/main.js"></script>
+  <script type="module" src="js/main.js"></script>
 </body>
 </html>

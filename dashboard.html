@@ -1,152 +1,172 @@
 <!doctype html>
 <html lang="pt-br">
+
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Lancely Dashboard</title>
-  <link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="css/dashboard.css">
-<link rel="stylesheet" href="css/components/chart.css">
+
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <link rel="stylesheet" href="css/components/chart.css" />
+</head>
 
 <body>
-<div class="container">
+  <div class="container">
 
-  <aside class="sidebar">
-    <div>
-      <div class="logo-box">
-        <img src="assets/logo.png" />
-        <span>Lancely</span>
-      </div>
-
-      <nav>
-        <a class="active">Dashboard</a>
-        <a href="clientes.html">Clientes</a>
-        <a href="projetos.html">Projetos</a>
-      </nav>
-    </div>
-
-    <div class="plan-box">
-      <h4>Plano Free</h4>
-      <p>Limites ativos</p>
-
-      <div class="progress">
-        <div class="bar"></div>
-      </div>
-
-      <button onclick="irPlanos()">Upgrade</button>
-    </div>
-  </aside>
-
-  <main class="main">
-
-    <div class="topbar">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
       <div>
-        <h1 id="saudacao">Bom dia 👋</h1>
-        <p>Aqui está um resumo do seu trabalho hoje.</p>
+        <div class="logo-box">
+          <img src="assets/logo.png" alt="Logo Lancely" />
+          <span>Lancely</span>
+        </div>
+
+        <nav>
+          <a href="dashboard.html" class="active">Dashboard</a>
+          <a href="clientes.html">Clientes</a>
+          <a href="projetos.html">Projetos</a>
+        </nav>
       </div>
 
-      <div class="top-actions">
-        <input placeholder="Buscar..." class="search" />
+      <div class="plan-box">
+        <h4>Plano Free</h4>
+        <p>Limites ativos</p>
 
-        <!-- USER -->
-        <div class="user-box" onclick="toggleUserMenu()">
-          <img src="https://i.pravatar.cc/40" />
+        <div class="progress">
+          <div class="bar"></div>
+        </div>
 
-          <div>
-            <strong id="userNome">Usuário</strong>
-            <span>Freelancer</span>
+        <button onclick="irPlanos()">Upgrade</button>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+
+      <!-- TOPBAR -->
+      <div class="topbar">
+        <div>
+          <h1 id="saudacao">Bom dia 👋</h1>
+          <p>Aqui está um resumo do seu trabalho hoje.</p>
+        </div>
+
+        <div class="top-actions">
+          <input type="text" placeholder="Buscar..." class="search" />
+
+          <div class="user-box" onclick="toggleUserMenu()">
+            <img src="https://i.pravatar.cc/40" alt="Usuário" />
+
+            <div class="user-meta">
+              <strong id="userNome">Usuário</strong>
+              <span>Freelancer</span>
+            </div>
+
+            <div id="userMenu" class="user-menu">
+              <p id="menuNome"></p>
+              <small id="menuEmail"></small>
+
+              <hr />
+
+              <button onclick="irPerfil()">Perfil</button>
+              <button onclick="logout()">Sair</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARDS -->
+      <div class="cards">
+        <div class="card">
+          <img class="card-img" src="assets/dashboard/ganhos.png" alt="Ganhos" />
+          <div class="card-info">
+            <span>Ganhos</span>
+            <h2 id="ganhos">R$ 0</h2>
+          </div>
+        </div>
+
+        <div class="card">
+          <img class="card-img" src="assets/dashboard/projetos.png" alt="Projetos" />
+          <div class="card-info">
+            <span>Projetos</span>
+            <h2 id="totalProjetos">0</h2>
+          </div>
+        </div>
+
+        <div class="card">
+          <img class="card-img" src="assets/dashboard/concluidos.png" alt="Concluídos" />
+          <div class="card-info">
+            <span>Concluídos</span>
+            <h2 id="concluidos">0</h2>
+          </div>
+        </div>
+
+        <div class="card">
+          <img class="card-img" src="assets/dashboard/pendentes.png" alt="Pendentes" />
+          <div class="card-info">
+            <span>Pendente de pagamento</span>
+            <h2 id="pendentes">R$ 0</h2>
+            <small id="pendentesLabel">0 projeto(s) pendente(s)</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- GRID -->
+      <div class="grid">
+
+        <!-- GRÁFICO -->
+        <div class="box box-grafico">
+          <div class="grafico-header">
+            <div class="grafico-title">
+              <h3>
+                Ganhos
+                <span id="badgePro" class="badge-pro"></span>
+              </h3>
+              <p class="grafico-subtitle">Visão geral dos pagamentos recebidos</p>
+            </div>
+
+            <div id="filtros" class="filtros">
+              <button onclick="setPeriodo(7)">7d</button>
+              <button onclick="setPeriodo(30)" class="active">30d</button>
+              <button onclick="setPeriodo(365)">12m</button>
+            </div>
           </div>
 
-          <!-- MENU -->
-          <div id="userMenu" class="user-menu">
-            <p id="menuNome"></p>
-            <small id="menuEmail"></small>
-
-            <hr />
-
-            <button onclick="irPerfil()">Perfil</button>
-            <button onclick="logout()">Sair</button>
+          <div class="grafico-wrap">
+            <canvas id="grafico"></canvas>
           </div>
         </div>
 
-      </div>
-    </div>
- 
-    <div class="cards">
-      <div class="card">
-        <img class="card-img" src="assets/dashboard/ganhos.png" alt="">
-        <div class="card-info">
-          <span>Ganhos</span>
-          <h2 id="ganhos">R$ 0</h2>
+        <!-- PROJETOS RECENTES -->
+        <div class="box">
+          <div class="box-header">
+            <h3>Projetos recentes</h3>
+          </div>
+          <ul id="listaProjetos" class="lista-dashboard"></ul>
         </div>
-      </div>
 
-      <div class="card">
-        <img class="card-img" src="assets/dashboard/projetos.png" alt="">
-        <div class="card-info">
-          <span>Projetos</span>
-          <h2 id="totalProjetos">0</h2>
+        <!-- PRAZOS -->
+        <div class="box">
+          <div class="box-header">
+            <h3>Prazos</h3>
+          </div>
+          <ul id="listaPrazos" class="lista-dashboard"></ul>
         </div>
-      </div>
 
-      <div class="card">
-        <img class="card-img" src="assets/dashboard/concluidos.png" alt="">
-        <div class="card-info">
-          <span>Concluídos</span>
-          <h2 id="concluidos">0</h2>
+        <!-- CLIENTES -->
+        <div class="box">
+          <div class="box-header">
+            <h3>Clientes</h3>
+          </div>
+          <ul id="listaClientes" class="lista-dashboard"></ul>
         </div>
+
       </div>
-
-      <div class="card">
-        <img class="card-img" src="assets/dashboard/pendentes.png" alt="">
-        <div class="card-info">
-          <span>Pendentes</span>
-          <h2 id="pendentes">0</h2>
-        </div>
-      </div>
-    </div>
-
-    <div class="grid">
-
-<div class="box box-grafico">
-
-  <div class="grafico-header">
-    <h3>
-      Ganhos
-      <span id="badgePro" class="badge-pro"></span>
-    </h3>
-
-    <!-- FILTROS (SÓ PRO) -->
-    <div id="filtros" class="filtros">
-      <button onclick="setPeriodo(7)">7d</button>
-      <button onclick="setPeriodo(30)">30d</button>
-      <button onclick="setPeriodo(365)">12m</button>
-    </div>
+    </main>
   </div>
 
-  <canvas id="grafico"></canvas>
-
-</div>
-
-      <div class="box">
-        <h3>Projetos recentes</h3>
-        <ul id="listaProjetos"></ul>
-      </div>
-
-      <div class="box">
-        <h3>Prazos</h3>
-        <ul></ul>
-      </div>
-
-      <div class="box">
-        <h3>Clientes</h3>
-        <ul id="listaClientes"></ul>
-      </div>
-
-    </div>
-  </main>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script type="module" src="js/main.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script type="module" src="js/main.js"></script>
 </body>
+
 </html>

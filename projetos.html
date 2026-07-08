@@ -13,7 +13,6 @@
   <!-- SIDEBAR -->
   <aside class="sidebar">
     <div>
-
       <div class="logo-box">
         <img src="assets/logo.png">
         <span>Lancely</span>
@@ -24,7 +23,20 @@
         <a href="clientes.html">Clientes</a>
         <a href="projetos.html" class="active">Projetos</a>
       </nav>
+    </div>
 
+    <!-- opcional, mas recomendado -->
+    <div class="plan-box">
+      <h4>Plano</h4>
+      <p>Limites ativos</p>
+
+      <div class="progress">
+        <div class="bar"></div>
+      </div>
+
+      <button onclick="window.location.href='planos.html'">
+        Upgrade
+      </button>
     </div>
   </aside>
 
@@ -33,27 +45,23 @@
 
     <!-- TOPBAR -->
     <div class="topbar">
-
       <h1>Projetos</h1>
 
       <div class="top-actions">
-       <input
-    id="buscarProjeto"
-    class="search"
-    type="text"
-    placeholder="Buscar projeto..."
->
+        <input
+          id="buscarProjeto"
+          class="search"
+          type="text"
+          placeholder="Buscar projeto..."
+        >
       </div>
-
     </div>
 
     <!-- NOVO PROJETO -->
     <div class="box">
-
       <h3>Novo Projeto</h3>
 
       <div class="form-row">
-
         <input
           id="projetoNome"
           type="text"
@@ -76,17 +84,14 @@
         <button id="btnAddProjeto">
           Adicionar
         </button>
-
       </div>
-
     </div>
 
     <!-- FILTROS -->
     <div class="filtros">
-
-  <button class="active" onclick="filtrarProjetos('todos')">
-    Todos
-</button>
+      <button class="active" onclick="filtrarProjetos('todos')">
+        Todos
+      </button>
 
       <button onclick="filtrarProjetos('pendentes')">
         Pendentes
@@ -95,7 +100,6 @@
       <button onclick="filtrarProjetos('pagos')">
         Pagos
       </button>
-
     </div>
 
     <!-- LISTA -->
@@ -108,6 +112,5 @@
 </div>
 
 <script type="module" src="js/main.js"></script>
-
 </body>
 </html>
